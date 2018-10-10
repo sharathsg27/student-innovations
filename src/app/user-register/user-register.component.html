@@ -1,0 +1,66 @@
+<form>
+  <div class="form-group">
+    <label>Teacher Name</label>
+    <input type="text" class="form-control is-valid" id="teacherName" name="teacherName" placeholder="Teacher Name"
+           required/>
+  </div>
+  <div class="form-row">
+    <div class="col-sm-4 mb-3">
+      <label>School Name</label>
+      <input type="text" class="form-control is-valid" id="schoolName" name="schoolName" placeholder="School Name"
+             required/>
+    </div>
+    <div class="col-sm-4 mb-3">
+      <label>Type</label>
+      <select class="form-control" type="text" required>
+        <option *ngFor="let type of schoolType" [value]="type">
+          {{type}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-sm-4 mb-3">
+      <label>User Id</label>
+      <input type="text" class="form-control is-valid" id="userId" name="userId" placeholder="User ID" required/>
+    </div>
+    <div class="col-sm-4 mb-3">
+      <label>Password</label>
+      <input type="text" class="form-control is-valid" id="userPassword" name="userPassword"
+             placeholder="Password [A-Z, 0-9]" required/>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-sm-4 mb-3">
+      <label>Email</label>
+      <input type="text" class="form-control is-valid" id="userEmailId" name="userEmailId" placeholder="User ID"
+             required/>
+    </div>
+    <div class="col-sm-4 mb-3">
+      <label>Phone</label>
+      <input type="text" class="form-control is-valid" id="userPhone" name="userPhone" placeholder="Phone" required/>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="col-sm-4 mb-3">
+      <label for="address">Address</label>
+      <textarea class="form-control" id="address" name="address" placeholder="address" required></textarea>
+    </div>
+    <div class="col-sm-4 mb-3">
+      <label for="address">PIN</label>
+      <input type="number" class="form-control" id="pinCode" name="pinCode" placeholder="PIN Code" required/>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-sm-4 mb-3">
+      <label for="district">City / District</label>
+      <input type="text" class="form-control" id="district" name="district" placeholder="District" required/>
+    </div>
+    <div class="col-sm-4 mb-3">
+      <label for="state">State</label>
+      <input type="text" class="form-control" id="state" name="state" placeholder="State" required/>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="submit">Submit form</button>
+</form>

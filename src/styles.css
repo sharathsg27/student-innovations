@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+
+.navbar-bg {
+  background-color: #e3f2fd;
+}
+
+.form-field-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field-container > * {
+  width: 100%;
+}
