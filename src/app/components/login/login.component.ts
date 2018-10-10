@@ -3,8 +3,8 @@ import {AngularFireDatabase} from 'angularfire2/database';
 import {AngularFireAuth,} from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import {Router} from '@angular/router';
-import {NewUserSignIn, PhoneSignIn} from '../../classes/class';
-import {WindowService} from '../../services/window.service';
+import {UserSignInClass, PhoneSignInClass} from '../../classes/class';
+import {WindowService} from '../../utils/services/window/window.service';
 import {environment} from '../../../environments/environment';
 import {AuthService} from '../auth/auth.service';
 
@@ -17,8 +17,8 @@ import {AuthService} from '../auth/auth.service';
 export class LoginComponent implements OnInit {
   windowRef: any;
 
-  newUserSignIn = new NewUserSignIn();
-  PhoneSignIn = new PhoneSignIn('', null);
+  newUserSignIn = new UserSignInClass();
+  PhoneSignInClass = new PhoneSignInClass('', null);
 
   provider = new firebase.auth.GoogleAuthProvider();
   siteToken = environment.phoneSignInSettings.siteToken;
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   // Phone Number SignIn
   async sendVerificationCode(event) {
     event.preventDefault();
-    const phoneNumber = this.PhoneSignIn.number;
+    const phoneNumber = this.PhoneSignInClass.number;
     const appVerifier = this.windowRef.recaptchaVerifier;
 
     try {

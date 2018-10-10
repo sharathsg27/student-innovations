@@ -15,10 +15,20 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
 ];
 
+export const apiPath = {
+  registration: '/registration'
+};
+
+
 @NgModule({
   exports: [RouterModule],
   imports: [RouterModule.forRoot(routes)],
 })
 
 export class AppRoutingModule {
+  get apiPath() {
+    return {
+      registration: '/registration'
+    };
+  }
 }

@@ -24,6 +24,7 @@
     "@ng-bootstrap/ng-bootstrap": "^3.2.2",
     "@ngx-loading-bar/core": "^2.2.0",
     "@ngx-loading-bar/http": "^2.2.0",
+    "angular2-uuid": "^1.1.1",
     "angularfire2": "^5.0.2",
     "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",

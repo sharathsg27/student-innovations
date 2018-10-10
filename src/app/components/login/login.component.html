@@ -1,7 +1,7 @@
 <form>
   <div class="form-group">
     <label for="phone">Phone Number</label>
-    <input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="PhoneSignIn.number"
+    <input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="PhoneSignInClass.number"
            placeholder="Number" [maxlength]="13" required>
     <input type="text" class="form-control" name="emailLink" id="verifyCode" ngModel #verificationCode="ngModel"
            placeholder="Code" required/>

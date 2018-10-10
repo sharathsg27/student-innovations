@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {HomeComponent} from './components/home/home.component';
 import {StudentsComponent} from './components/students/students.component';
-import {AppRoutingModule} from './app-routing.module';
+import {AppRoutingModule} from './app.routing.module';
 
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireAuthModule} from 'angularfire2/auth';
@@ -22,6 +22,7 @@ import {SignUpComponent} from './components/sign-up/sign-up.component';
 import {LoadingBarHttpModule} from '@ngx-loading-bar/http';
 import {LoadingBarModule} from '@ngx-loading-bar/core';
 import {UserRegisterComponent} from './user-register/user-register.component';
+import {UUID} from 'angular2-uuid';
 
 @NgModule({
   declarations: [
@@ -47,9 +48,9 @@ import {UserRegisterComponent} from './user-register/user-register.component';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     LoadingBarHttpModule,
-    LoadingBarModule.forRoot()
+    LoadingBarModule.forRoot(),
   ],
-  providers: [NgbActiveModal],
+  providers: [NgbActiveModal, UUID],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

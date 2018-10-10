@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NewUserSignIn} from '../../classes/class';
+import {UserSignInClass} from '../../classes/class';
 import {AuthService} from '../auth/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -48,7 +48,7 @@ export class SignUpComponent implements OnInit {
   }
 
   // Email SignUp
-  async emailSignUp(newUserSignIn: NewUserSignIn) {
+  async emailSignUp(newUserSignIn: UserSignInClass) {
     try {
       this.appLoadingBarService.startLoading();
       // @ts-ignore

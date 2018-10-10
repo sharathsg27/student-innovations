@@ -9,3 +9,4 @@ export class WindowService {
     return window;
   }
 }
+

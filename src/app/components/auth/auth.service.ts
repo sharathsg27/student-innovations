@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as firebase from 'firebase';
 import {environment} from '../../../environments/environment';
-import {NewUserSignIn} from '../../classes/class';
+import {UserSignInClass} from '../../classes/class';
 import {AngularFireAuth} from '@angular/fire/auth';
 import UserCredential = firebase.auth.UserCredential;
 import {Router} from '@angular/router';
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
 
-  async emailSignUp(credentials: NewUserSignIn): Promise<UserCredential> {
+  async emailSignUp(credentials: UserSignInClass): Promise<UserCredential> {
     try {
       return await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
     } catch (e) {
@@ -45,7 +45,7 @@ export class AuthService {
     }
   }
 
-  async emailSignIn(credentials: NewUserSignIn): Promise<UserCredential> {
+  async emailSignIn(credentials: UserSignInClass): Promise<UserCredential> {
     try {
       return await this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
     } catch (e) {
