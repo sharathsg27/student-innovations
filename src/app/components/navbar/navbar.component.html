@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-xl navbar-dark bg-primary">
+  <ngx-loading-bar [color]="'rgba(248, 249, 250, 0.5)'" [includeSpinner]="false" [height]="'55px'"></ngx-loading-bar>
+  <a class="navbar-brand" routerLink="/home">ST - Innovations</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/home" routerLinkActive="active">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/students" routerLinkActive="active">Students</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2 text-hide" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0 text-hide" type="submit">Search</button>
+      <button class="btn btn-outline-light btn-primary my-2 my-sm-0" type="button" routerLink="/registration">Login /
+        Register
+      </button>
+    </form>
+  </div>
+</nav>

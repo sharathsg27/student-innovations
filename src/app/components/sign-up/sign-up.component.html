@@ -1,0 +1,26 @@
+<form [formGroup]="signUpForm" (ngSubmit)="emailSignUp(signUpForm)">
+  <div class="form-group">
+    <label class="mr-2"><span><i class="material-icons align-top mr-2">mail</i></span>Email</label>
+    <input class="form-control" formControlName="email" name="email" id="email" type="text" [email]="true" required/>
+  </div>
+
+  <div class="alert alert-danger"
+       *ngIf="signUpForm.get('email').touched && signUpForm.get('email').invalid">
+    <p class="text text-danger text-center">A valid Email Id is required!</p>
+  </div>
+
+
+  <div class="form-group">
+    <label><span><i class="material-icons align-top mr-2">vpn_key</i></span>Password</label>
+    <input class="form-control" formControlName="password" type="password" required/>
+  </div>
+
+  <div class="alert alert-danger"
+       *ngIf="signUpForm.get('password').touched && signUpForm.get('password').invalid">
+    <p class="text text-danger">Please enter a Password!</p>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary btn-lg" [disabled]="signUpForm.invalid">Sign up</button>
+  </div>
+</form>

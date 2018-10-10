@@ -1,0 +1,31 @@
+<form>
+  <div class="form-group">
+    <label for="phone">Phone Number</label>
+    <input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="PhoneSignIn.number"
+           placeholder="Number" [maxlength]="13" required>
+    <input type="text" class="form-control" name="emailLink" id="verifyCode" ngModel #verificationCode="ngModel"
+           placeholder="Code" required/>
+    <input type="text" class="form-control" name="emailLink" id="emailLink" ngModel #email="ngModel" placeholder="Email"
+           required/>
+  </div>
+
+  <h1>Login</h1>
+  <div class="form-group">
+    <label for="emailId">Email</label>
+    <input type="text" class="form-control" [(ngModel)]="newUserSignIn.email" name="emailId" id="emailId" required/>
+  </div>
+  <div class="form-group">
+    <label for="userPassword">Password</label>
+    <input type="password" class="form-control" [(ngModel)]="newUserSignIn.password" name="userPassword"
+           id="userPassword" required/>
+  </div>
+  <button type="submit" class="btn btn-danger btn-lg" (click)="emailSignIn()">Login</button>
+
+  <button type="submit" class="btn btn-light btn-lg g-recaptcha" id="phone-signIn" [attr.data-sitekey]="siteToken"
+          (click)="sendVerificationCode($event)">Send Verification Code
+  </button>
+  <button type="submit" class="btn btn-light btn-lg" (click)="verifyCode($event, verificationCode)">Verify Code</button>
+  <button type="submit" class="btn btn-light btn-lg" (click)="signInWithGoogle();">Sign-In with Google</button>
+  <button type="submit" class="btn btn-light btn-lg" (click)="sendEmailLink($event, email);">Send Email Link</button>
+
+</form>
