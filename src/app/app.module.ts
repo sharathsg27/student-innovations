@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
@@ -23,6 +23,8 @@ import {LoadingBarHttpModule} from '@ngx-loading-bar/http';
 import {LoadingBarModule} from '@ngx-loading-bar/core';
 import {UserRegisterComponent} from './user-register/user-register.component';
 import {UUID} from 'angular2-uuid';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import {UUID} from 'angular2-uuid';
     UserRegisterComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
@@ -49,6 +52,7 @@ import {UUID} from 'angular2-uuid';
     AngularFireAuthModule,
     LoadingBarHttpModule,
     LoadingBarModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   providers: [NgbActiveModal, UUID],
   bootstrap: [AppComponent]

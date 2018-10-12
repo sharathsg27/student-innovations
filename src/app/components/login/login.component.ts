@@ -7,6 +7,9 @@ import {UserSignInClass, PhoneSignInClass} from '../../classes/class';
 import {WindowService} from '../../utils/services/window/window.service';
 import {environment} from '../../../environments/environment';
 import {AuthService} from '../auth/auth.service';
+import {MessageService} from '../../utils/messages/message.service';
+import {NotificationService} from '../../utils/notifications/notification.service';
+import {ErrorsHandler} from '../../utils/error-handler/error-handler';
 
 
 @Component({
@@ -26,6 +29,8 @@ export class LoginComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth,
               private router: Router,
               private window: WindowService,
+              private notificationService: NotificationService,
+              private errorHandler: ErrorsHandler,
               private authService: AuthService) {
   }
 
@@ -45,6 +50,10 @@ export class LoginComponent implements OnInit {
 
     try {
       this.windowRef.confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier);
+      if (this.windowRef.confirmationResult) {
+        this.notificationService.showSuccessMessage('Verification code has been sent to your mobile. Please verify to login.',
+          'Mobile Verification');
+      }
     } catch (e) {
       console.log(e);
     }
@@ -54,9 +63,13 @@ export class LoginComponent implements OnInit {
   async verifyCode(event, model) {
     event.preventDefault();
     try {
-      const user = await this.windowRef.confirmationResult.confirm(model.value);
+      const result = await this.windowRef.confirmationResult.confirm(model.value);
+      if (result) {
+        this.notificationService.showSuccessMessage('Phone verified successfully!', 'Mobile Verification');
+        this.router.navigate(['/students']);
+      }
     } catch (e) {
-      console.log(e);
+      this.errorHandler.handleError(e);
     }
 
   }
@@ -64,7 +77,16 @@ export class LoginComponent implements OnInit {
   // Email Link SignIn
   sendEmailLink(event, model) {
     event.preventDefault();
-    this.authService.sendEmailLink(model.value);
+    try {
+      this.authService.sendEmailLink(model.value).then(result => {
+        if (result) {
+          this.notificationService.showSuccessMessage('Please click the link sent to your account to confirm & login',
+            'Email Verification');
+        }
+      });
+    } catch (e) {
+      this.errorHandler.handleError(e);
+    }
   }
 
   // Custom SignIn
@@ -73,10 +95,12 @@ export class LoginComponent implements OnInit {
       try {
         const user = await this.authService.emailSignIn(this.newUserSignIn);
         if (user) {
+          this.notificationService.showSuccessMessage('Login Successfull!',
+            'Email Login');
           this.router.navigate(['/home']);
         }
       } catch (e) {
-        console.log(e);
+        this.errorHandler.handleError(e);
       }
     }
   }
@@ -85,9 +109,12 @@ export class LoginComponent implements OnInit {
   async signInWithGoogle() {
     try {
       const result = await this.afAuth.auth.signInWithPopup(this.provider);
-      if (result) this.router.navigate(['/students']);
+      if (result) {
+        this.notificationService.showSuccessMessage('Log in successfully!', 'Google Sign-In');
+        this.router.navigate(['/students']);
+      }
     } catch (e) {
-      console.log(e);
+      this.errorHandler.handleError(e);
     }
   }
 

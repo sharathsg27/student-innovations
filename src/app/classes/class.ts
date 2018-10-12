@@ -39,5 +39,17 @@ export class UserRegisterClass {
   }
 }
 
+export class VerificationTypeClass {
+  constructor(
+    public email: string = 'Email',
+    public phone: string = 'Mobile',
+  ) {
+  }
+
+  get types() {
+    return [this.email, this.phone];
+  }
+}
+
 
 

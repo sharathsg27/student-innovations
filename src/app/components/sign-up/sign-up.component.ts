@@ -4,6 +4,9 @@ import {AuthService} from '../auth/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AppLoadingBarService} from '../../utils/loading-bar/loading-bar.service';
+import {NotificationService} from '../../utils/notifications/notification.service';
+import {MessageService} from '../../utils/messages/message.service';
+import {ErrorsHandler} from '../../utils/error-handler/error-handler';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,11 +15,15 @@ import {AppLoadingBarService} from '../../utils/loading-bar/loading-bar.service'
 })
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
+  formRequiredMessage = new MessageService();
 
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private appLoadingBarService: AppLoadingBarService,
-              private router: Router) {
+              private notificationService: NotificationService,
+              private messages: MessageService,
+              private router: Router,
+              private errorHandler: ErrorsHandler) {
   }
 
   ngOnInit() {
@@ -55,9 +62,10 @@ export class SignUpComponent implements OnInit {
       const user = await this.authService.emailSignUp(newUserSignIn.value);
       if (user) {
         this.appLoadingBarService.stopLoading();
+        this.notificationService.showSuccessMessage('Sign-Up Successfull!', 'Sign Up');
       }
     } catch (e) {
-      console.log(e);
+      this.errorHandler.handleError(e);
     }
   }
 

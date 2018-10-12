@@ -5,6 +5,8 @@ import {UserSignInClass} from '../../classes/class';
 import {AngularFireAuth} from '@angular/fire/auth';
 import UserCredential = firebase.auth.UserCredential;
 import {Router} from '@angular/router';
+import {ErrorsHandler} from '../../utils/error-handler/error-handler';
+import {e} from '../../../../node_modules/@angular/core/src/render3';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,8 @@ import {Router} from '@angular/router';
 export class AuthService {
 
   constructor(private afAuth: AngularFireAuth,
-              private router: Router) {
+              private router: Router,
+              private errorHandler: ErrorsHandler) {
   }
 
   async checkAuth() {
@@ -23,7 +26,7 @@ export class AuthService {
         } else this.router.navigate(['/registration']);
       });
     } catch (e) {
-      console.log(e);
+      this.errorHandler.handleError(e);
     }
   }
 
@@ -32,7 +35,7 @@ export class AuthService {
       await firebase.auth().sendSignInLinkToEmail(value, environment.emailLinkAuthSettings);
       window.localStorage.setItem('emailForSignIn', value);
     } catch (e) {
-      console.log(e);
+      this.errorHandler.handleError(e);
     }
   }
 
@@ -41,7 +44,7 @@ export class AuthService {
     try {
       return await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
     } catch (e) {
-      console.log(e);
+      this.errorHandler.handleError(e);
     }
   }
 
@@ -49,7 +52,7 @@ export class AuthService {
     try {
       return await this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
     } catch (e) {
-      console.log(e);
+      this.errorHandler.handleError(e);
     }
   }
 }
