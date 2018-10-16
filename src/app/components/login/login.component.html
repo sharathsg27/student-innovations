@@ -1,31 +1,31 @@
 <form>
-  <div class="form-group">
-    <label for="phone">Phone Number</label>
-    <input type="text" class="form-control" name="phone" id="phone" [(ngModel)]="PhoneSignInClass.number"
-           placeholder="Number" [maxlength]="13" required>
-    <input type="text" class="form-control" name="emailLink" id="verifyCode" ngModel #verificationCode="ngModel"
-           placeholder="Code" required/>
-    <input type="text" class="form-control" name="emailLink" id="emailLink" ngModel #email="ngModel" placeholder="Email"
-           required/>
-  </div>
-
-  <h1>Login</h1>
-  <div class="form-group">
+  <!--<div class="form-group d-none">
     <label for="emailId">Email</label>
     <input type="text" class="form-control" [(ngModel)]="newUserSignIn.email" name="emailId" id="emailId" required/>
   </div>
-  <div class="form-group">
+  <div class="form-group d-none">
     <label for="userPassword">Password</label>
     <input type="password" class="form-control" [(ngModel)]="newUserSignIn.password" name="userPassword"
            id="userPassword" required/>
   </div>
-  <button type="submit" class="btn btn-danger btn-lg" (click)="emailSignIn()">Login</button>
-
-  <button type="submit" class="btn btn-light btn-lg g-recaptcha" id="phone-signIn" [attr.data-sitekey]="siteToken"
-          (click)="sendVerificationCode($event)">Send Verification Code
-  </button>
-  <button type="submit" class="btn btn-light btn-lg" (click)="verifyCode($event, verificationCode)">Verify Code</button>
+  <button type="submit" class="btn btn-danger btn-lg d-none" (click)="emailSignIn()">Login</button>-->
+  <h4>Please Login before Registering</h4>
+  <div class="form-group" *ngIf="!verificationCodeSent" id="mobile-verification">
+    <label for="mobile"><span><i class="material-icons mr-2 align-text-bottom">phone_android</i>Mobile</span></label>
+    <input type="text" class="form-control mb-3" name="mobile" id="mobile" [(ngModel)]="phoneSignInClass.number"
+           placeholder="Number" [maxlength]="13" required>
+    <button type="submit" class="btn btn-primary btn-lg g-recaptcha" id="recaptcha-container"
+            [attr.data-sitekey]="siteToken"
+            (click)="sendVerificationCode($event)">Send Verification Code
+    </button>
+  </div>
+  <div class="form-group" *ngIf="verificationCodeSent">
+    <input type="text" class="form-control mb-3" name="emailLink" id="verifyCode" ngModel #verificationCode="ngModel"
+           placeholder="Code" required/>
+    <button type="submit" class="btn btn-primary btn-lg" (click)="verifyCode($event, verificationCode)">Verify Code
+    </button>
+  </div>
   <button type="submit" class="btn btn-light btn-lg" (click)="signInWithGoogle();">Sign-In with Google</button>
-  <button type="submit" class="btn btn-light btn-lg" (click)="sendEmailLink($event, email);">Send Email Link</button>
 
 </form>
+

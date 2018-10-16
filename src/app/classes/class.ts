@@ -8,8 +8,7 @@ export class UserSignInClass {
 
 export class PhoneSignInClass {
   constructor(
-    public country: string = '',
-    public number: string = ''
+    public number: string = '+91'
   ) {
   }
 }
@@ -36,18 +35,6 @@ export class UserRegisterClass {
     public pinCode: number = null,
     public state: string = ''
   ) {
-  }
-}
-
-export class VerificationTypeClass {
-  constructor(
-    public email: string = 'Email',
-    public phone: string = 'Mobile',
-  ) {
-  }
-
-  get types() {
-    return [this.email, this.phone];
   }
 }
 

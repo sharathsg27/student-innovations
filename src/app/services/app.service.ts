@@ -1,18 +1,97 @@
 import {Injectable} from '@angular/core';
-import {AppRoutingModule} from '../app.routing.module';
 import {UUIDService} from '../utils/services/UUID/uuid.service';
-import {AngularFireDatabase, SnapshotAction} from '@angular/fire/database';
-import {Observable} from 'rxjs';
-import {ErrorsHandler} from '../utils/error-handler/error-handler';
+import {AngularFireDatabase} from '@angular/fire/database';
+import {ErrorHandlerService} from '../utils/error-handler/error-handler';
+import {NotificationService} from '../utils/notifications/notification.service';
+import * as firebase from 'firebase';
+import {environment} from '../../environments/environment';
+import {UserSignInClass} from '../classes/class';
+import UserCredential = firebase.auth.UserCredential;
+import {Router} from '@angular/router';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
+  // Observable string sources
+  loggedInStaus = new Subject<boolean>();
+  // Observable string streams
+  isLoggedIn$ = this.loggedInStaus.asObservable();
 
-  constructor(private appRoute: AppRoutingModule,
-              private uuidService: UUIDService,
+  constructor(private uuidService: UUIDService,
+              private router: Router,
+              private afAuth: AngularFireAuth,
+              private notificationService: NotificationService,
+              private errorHandlerService: ErrorHandlerService,
               private db: AngularFireDatabase) {
+  }
+
+  checkAuth() {
+    return new Promise((resolve, reject) => {
+      try {
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            resolve(user);
+          }
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  signInWithGoogle(provider) {
+    return new Promise((resolve, reject) => {
+      try {
+        const loggedIn = this.afAuth.auth.signInWithPopup(provider);
+        if (loggedIn) {
+          resolve(loggedIn);
+        }
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  logOut() {
+    return new Promise(((resolve, reject) => {
+      try {
+        const loggedOut = this.afAuth.auth.signOut();
+        if (loggedOut) {
+          resolve(loggedOut);
+        }
+      } catch (e) {
+        reject(e);
+      }
+    }));
+  }
+
+  async sendEmailLink(value) {
+    try {
+      await firebase.auth().sendSignInLinkToEmail(value, environment.emailLinkAuthSettings);
+      window.localStorage.setItem('emailForSignIn', value);
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
+  }
+
+
+  async emailSignUp(credentials: UserSignInClass): Promise<UserCredential> {
+    try {
+      return await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
+  }
+
+  async emailSignIn(credentials: UserSignInClass): Promise<UserCredential> {
+    try {
+      return await this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
   }
 
 
@@ -25,13 +104,13 @@ export class AppService {
     try {
       await this.db.database.ref(api + '/' + this.uuidService.generateUUID).set(data)
         .then((response) => {
-          console.log(response);
+          this.notificationService.showSuccessMessage('Record created successfully!');
         })
         .catch((error: Error) => {
-          return error.message;
+          this.notificationService.showErrorMessage(error.message);
         });
     } catch (e) {
-      console.log(e);
+      this.errorHandlerService.handleError(e);
     }
   }
 
@@ -39,17 +118,18 @@ export class AppService {
    *
    * @param api
    */
-  async getAllRecord(api: string) {
+  getAllRecord(api: string) {
     try {
-      return await this.db.database.ref(api).once('value')
+      return this.db.database.ref(api).once('value')
         .then(response => {
+          this.notificationService.showSuccessMessage('Records fetched successfully!');
           return response.val();
         })
         .catch((error: Error) => {
-          return error.message;
+          this.notificationService.showErrorMessage(error.message);
         });
     } catch (e) {
-      return e;
+      this.errorHandlerService.handleError(e);
     }
   }
 }
