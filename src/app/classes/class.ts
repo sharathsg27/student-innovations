@@ -51,5 +51,19 @@ export class VerificationTypeClass {
   }
 }
 
+export class IdeaClass {
+  constructor(
+    public studentName: string = '',
+    public studentClass: number = null,
+    public studentSection: string = '',
+    public studentRollNumber: string = '',
+    public idea: string = '',
+    public photos: any[],
+    public videoLinks: any[]
+  ) {
+
+  }
+}
+
 
 

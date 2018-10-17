@@ -1,0 +1,109 @@
+<section class="container col-sm-6">
+  <form [formGroup]="ideaForm" (ngSubmit)="addIdea(ideaForm)">
+    <div class="form-row">
+      <div class="form-group col-sm-6">
+        <label for="studentName">Student Name:</label>
+        <input type="text"
+               class="form-control"
+               formControlName="studentName"
+               id="studentName"
+               autocomplete="off"
+               name="studentName"
+               required
+               [ngClass]="{'is-valid': ideaForm.get('studentName').touched && ideaForm.get('studentName').valid,
+                      'is-invalid': ideaForm.get('studentName').touched && ideaForm.get('studentName').invalid}">
+        <div class="invalid-feedback"
+             *ngIf="ideaForm.get('studentName').touched && ideaForm.get('studentName').invalid">
+          <span>{{formRequiredMessage.getFormRequiredMessage('Student name')}}</span>
+        </div>
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="studentClass">Class:</label>
+        <input type="number"
+               class="form-control"
+               formControlName="studentClass"
+               id="studentClass"
+               name="studentClass"
+               [ngClass]="{'is-valid': ideaForm.get('studentClass').touched && ideaForm.get('studentClass').valid,
+                      'is-invalid': ideaForm.get('studentClass').touched && ideaForm.get('studentClass').invalid}"
+               required>
+        <div class="invalid-feedback"
+             *ngIf="ideaForm.get('studentClass').touched && ideaForm.get('studentClass').invalid">
+          <span>{{formRequiredMessage.getFormRequiredMessage('Class')}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm-6">
+        <label for="studentSection">Section:</label>
+        <input type="text"
+               class="form-control"
+               id="studentSection"
+               name="studentSection">
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="studentRollNumber">Roll Number:</label>
+        <input type="text"
+               class="form-control"
+               id="studentRollNumber"
+               name="studentRollNumber">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm-12">
+        <label for="idea">Idea:</label>
+        <textarea class="form-control"
+                  id="idea"
+                  rows="15"
+                  name="idea"
+                  formControlName="idea"
+                  required
+                  [ngClass]="{'is-valid': ideaForm.get('idea').touched && ideaForm.get('idea').valid,
+                      'is-invalid': ideaForm.get('idea').touched && ideaForm.get('idea').invalid}"></textarea>
+        <div class="invalid-feedback" *ngIf="ideaForm.get('idea').touched && ideaForm.get('idea').invalid">
+          <span>{{formRequiredMessage.getFormRequiredMessage('Idea')}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm-6">
+        <label for="photos">Photos:</label>
+        <input type="file"
+               id="photos"
+               multiple
+               (change)="uploadFile($event)"
+               name="photos"
+               accept=".png,.jpg">
+        <progress max="100" [value]="(uploadProgress | async)"></progress>
+      </div>
+      <div *ngIf="uploadedPhotos">
+        <p>uploaded Photos</p>
+        <ul class="list-group">
+          <li *ngFor="let eachPhoto of uploadedPhotos" class="list-group-item">
+            <span>{{ eachPhoto["name"] }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm-6">
+        <label for="videoLinks">Video Links:</label>
+        <input type="url"
+               class="form-control"
+               formControlName="videoLinks"
+               id="videoLinks"
+               [ngClass]="{'is-valid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').valid,
+                      'is-invalid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid}">
+        <div class="invalid-feedback"
+             *ngIf="ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid">
+          <span>{{formRequiredMessage.getFormInvalidMessage('video link')}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm-6">
+        <button type="submit" class="btn btn-primary" [disabled]="ideaForm.invalid">Add</button>
+      </div>
+    </div>
+  </form>
+</section>

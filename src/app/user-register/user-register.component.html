@@ -1,7 +1,10 @@
 <form [formGroup]="userRegisterForm" (ngSubmit)="registerUser(userRegisterForm)">
   <div class="form-group">
     <label><span><i class="material-icons mr-2 align-text-bottom">person</i></span>Teacher</label>
-    <input type="text" class="form-control" formControlName="teacherName" id="teacherName" name="teacherName"
+    <input type="text" class="form-control"
+           formControlName="teacherName"
+           id="teacherName"
+           name="teacherName"
            placeholder="Teacher Name"
            [ngClass]="{'is-valid': userRegisterForm.get('teacherName').touched && userRegisterForm.get('teacherName').valid,
                       'is-invalid': userRegisterForm.get('teacherName').touched && userRegisterForm.get('teacherName').invalid}"
@@ -58,7 +61,12 @@
     </div>
     <div class="col-sm-6" *ngIf="selectedVerifType === verificationTypeClass.email">
       <label>&nbsp;</label>
-      <input type="text" class="form-control" formControlName="email" id="emailId" name="emailId" placeholder="Email ID"
+      <input type="text"
+             class="form-control"
+             formControlName="email"
+             id="emailId"
+             name="emailId"
+             placeholder="Email ID"
              [email]="true"
              [ngClass]="{'is-valid': userRegisterForm.get('email').touched && userRegisterForm.get('email').valid,
                       'is-invalid': userRegisterForm.get('email').touched && userRegisterForm.get('email').invalid}"

@@ -5,6 +5,8 @@ import {NgModule} from '@angular/core';
 import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {AuthComponent} from './components/auth/auth.component';
+import {ListIdeasComponent} from './components/ideas/list-ideas/list-ideas.component';
+import {AddIdeaComponent} from './components/ideas/add-idea/add-idea.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/auth', pathMatch: 'full'},
@@ -13,6 +15,8 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'students', component: StudentsComponent},
   {path: 'registration', component: RegistrationComponent},
+  {path: 'ideas', component: ListIdeasComponent},
+  {path: 'add-idea', component: AddIdeaComponent},
 ];
 
 
@@ -24,7 +28,8 @@ const routes: Routes = [
 export class AppRoutingModule {
   get apiPath() {
     return {
-      registration: '/registration'
+      registration: '/registration',
+      ideas: '/ideas'
     };
   }
 }

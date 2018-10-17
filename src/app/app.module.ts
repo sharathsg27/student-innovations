@@ -25,6 +25,9 @@ import {UserRegisterComponent} from './user-register/user-register.component';
 import {UUID} from 'angular2-uuid';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ListIdeasComponent} from './components/ideas/list-ideas/list-ideas.component';
+import {AddIdeaComponent} from './components/ideas/add-idea/add-idea.component';
+import {AngularFireStorageModule} from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     RegistrationComponent,
     AuthComponent,
     SignUpComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    ListIdeasComponent,
+    AddIdeaComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -52,7 +57,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     AngularFireAuthModule,
     LoadingBarHttpModule,
     LoadingBarModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    AngularFireStorageModule
   ],
   providers: [NgbActiveModal, UUID],
   bootstrap: [AppComponent]
