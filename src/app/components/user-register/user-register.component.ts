@@ -11,7 +11,9 @@ import {WindowService} from '../../utils/services/window/window.service';
 import {Router} from '@angular/router';
 import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
 import {LoadingBarService} from '@ngx-loading-bar/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {User} from 'firebase';
+import {AppLoadingBarService} from '../../utils/loading-bar/loading-bar.service';
 
 @Component({
   selector: 'app-user-register',
@@ -20,6 +22,7 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class UserRegisterComponent implements OnInit {
   // Initializations
+  user: Object;
   isLoggedIn: boolean;
   userRegisterForm: FormGroup;
   setUserRegisterForm = false;
@@ -35,7 +38,7 @@ export class UserRegisterComponent implements OnInit {
               private window: WindowService,
               private notificationService: NotificationService,
               private messageService: MessageService,
-              private loadingBarService: LoadingBarService,
+              private loadingBarService: AppLoadingBarService,
               private errorHandlerService: ErrorHandlerService) {
 
     appService.isLoggedIn$.subscribe(isLoggedIn => {
@@ -44,10 +47,9 @@ export class UserRegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    /*this.getRegisteredUsers();*/
+    this.checkUser();
     this.getSchoolTypeValues();
     this.buildUserRegisterForm();
-    this.checkUser();
 
   }
 
@@ -61,6 +63,7 @@ export class UserRegisterComponent implements OnInit {
       if (user) {
         this.isLoggedIn = true;
         this.setUserRegisterForm = true;
+        this.user = user;
       } else {
         if (this.router.url !== '/registration') {
           this.router.navigate(['/home']);
@@ -74,12 +77,12 @@ export class UserRegisterComponent implements OnInit {
   // Select Registration type
   selectRegistrationType(event) {
     event.preventDefault();
-    if (event.target.value === 'post') {
+    if (event.target.value === 'Post') {
       this.userRegisterForm.controls['teacherName'].clearValidators();
       this.userRegisterForm.controls['schoolName'].clearValidators();
       this.userRegisterForm.controls['teacherName'].updateValueAndValidity();
       this.userRegisterForm.controls['schoolName'].updateValueAndValidity();
-    } else if (event.target.value === 'teacher') {
+    } else if (event.target.value === 'Teacher') {
       this.userRegisterForm.controls['teacherName'].setValidators(this.formValidator);
       this.userRegisterForm.controls['schoolName'].setValidators(this.formValidator);
       this.userRegisterForm.controls['teacherName'].updateValueAndValidity();
@@ -97,7 +100,7 @@ export class UserRegisterComponent implements OnInit {
 
   buildUserRegisterForm() {
     this.userRegisterForm = this.fb.group({
-      'registerType': ['teacher', this.formValidator],
+      'registerType': ['Teacher', this.formValidator],
       'teacherName': ['', this.formValidator],
       'schoolName': ['', this.formValidator],
       'schoolType': ['', this.formValidator],
@@ -110,9 +113,17 @@ export class UserRegisterComponent implements OnInit {
 
   registerUser(form: UserRegisterClass) {
     // @ts-ignore
-    console.log(form.value);
+    if (!form.value) {
+      return;
+    }
+    if (this.user) {
+      // @ts-ignore
+      form.value.userId = this.user.uid;
+    }
+    this.appService.loadingStatus.next(true);
     // @ts-ignore
     this.appService.createRecord('/registration', form.value);
+    this.appService.loadingStatus.next(false);
   }
 
 }

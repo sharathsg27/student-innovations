@@ -30,18 +30,17 @@ export class LoginComponent implements AfterViewInit {
   siteToken = environment.phoneSignInSettings.siteToken;
   @Output() mobileVerified = new EventEmitter<boolean>();
 
-  constructor(public afAuth: AngularFireAuth,
-              private router: Router,
+  constructor(private router: Router,
               private window: WindowService,
               private notificationService: NotificationService,
               private errorHandlerService: ErrorHandlerService,
               private loadingBarService: LoadingBarService,
               private elementRef: ElementRef,
               private appService: AppService) {
+    appService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
   }
 
   ngAfterViewInit() {
-    this.setWindowRecaptcha();
     this.checkUser();
   }
 
@@ -55,6 +54,7 @@ export class LoginComponent implements AfterViewInit {
           this.router.navigate(['/home']);
         }
       }
+      if (!this.isLoggedIn) this.setWindowRecaptcha();
     } catch (e) {
       this.errorHandlerService.handleError(e);
     }

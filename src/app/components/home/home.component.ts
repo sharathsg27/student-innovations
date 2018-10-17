@@ -10,6 +10,7 @@ import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  loading: boolean;
   constructor(private router: Router,
               private errorHandlerService: ErrorHandlerService,
               private appService: AppService) {
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
     try {
       const user = await this.appService.checkAuth();
       if (user) {
-        this.appService.loggedIn = new BehaviorSubject<boolean>(true);
+        this.appService.loggedInStaus = new BehaviorSubject<boolean>(true);
       }
     } catch (e) {
       this.errorHandlerService.handleError(e);

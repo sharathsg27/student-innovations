@@ -23,6 +23,7 @@ import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RegisteredUsersComponent} from './components/registered-users/registered-users.component';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
+import {NgxLoadingModule} from 'ngx-loading';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
     AngularFireAuthModule,
     LoadingBarHttpModule,
     Ng2SmartTableModule,
+    NgxLoadingModule.forRoot({}),
     LoadingBarModule.forRoot(),
     ToastrModule.forRoot()
   ],

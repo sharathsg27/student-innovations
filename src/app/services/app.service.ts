@@ -10,6 +10,7 @@ import UserCredential = firebase.auth.UserCredential;
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Subject} from 'rxjs';
+import {AppLoadingBarService} from '../utils/loading-bar/loading-bar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +18,19 @@ import {Subject} from 'rxjs';
 export class AppService {
   // Observable string sources
   loggedInStaus = new Subject<boolean>();
+  loadingStatus = new Subject<boolean>();
   // Observable string streams
   isLoggedIn$ = this.loggedInStaus.asObservable();
+  isLoading$ = this.loadingStatus.asObservable();
+
+  // Observable string sources
 
   constructor(private uuidService: UUIDService,
               private router: Router,
               private afAuth: AngularFireAuth,
               private notificationService: NotificationService,
               private errorHandlerService: ErrorHandlerService,
+              private loadingBarService: AppLoadingBarService,
               private db: AngularFireDatabase) {
   }
 
@@ -104,12 +110,15 @@ export class AppService {
     try {
       await this.db.database.ref(api + '/' + this.uuidService.generateUUID).set(data)
         .then((response) => {
+          this.loadingBarService.stopLoading();
           this.notificationService.showSuccessMessage('Record created successfully!');
         })
         .catch((error: Error) => {
+          this.loadingBarService.stopLoading();
           this.notificationService.showErrorMessage(error.message);
         });
     } catch (e) {
+      this.loadingBarService.stopLoading();
       this.errorHandlerService.handleError(e);
     }
   }

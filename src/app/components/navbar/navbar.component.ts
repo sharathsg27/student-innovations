@@ -14,6 +14,7 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean;
+  isLoading: boolean;
 
   constructor(private appService: AppService,
               private router: Router,
@@ -21,9 +22,8 @@ export class NavbarComponent implements OnInit {
               private loadingBarService: LoadingBarService,
               private errorHandlerService: ErrorHandlerService,
               private afAuth: AngularFireAuth) {
-    appService.isLoggedIn$.subscribe(isLoggedIn => {
-      this.isLoggedIn = isLoggedIn;
-    });
+    appService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    appService.isLoading$.subscribe(isLoading => this.isLoading = isLoading);
   }
 
   ngOnInit() {
