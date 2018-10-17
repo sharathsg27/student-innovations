@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {UserSignInClass} from '../../classes/class';
-import {AuthService} from '../auth/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AppLoadingBarService} from '../../utils/loading-bar/loading-bar.service';
 import {NotificationService} from '../../utils/notifications/notification.service';
 import {MessageService} from '../../utils/messages/message.service';
-import {ErrorsHandler} from '../../utils/error-handler/error-handler';
+import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
+import {AppService} from '../../services/app.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,13 +17,13 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   formRequiredMessage = new MessageService();
 
-  constructor(private authService: AuthService,
+  constructor(private appService: AppService,
               private fb: FormBuilder,
               private appLoadingBarService: AppLoadingBarService,
               private notificationService: NotificationService,
               private messages: MessageService,
               private router: Router,
-              private errorHandler: ErrorsHandler) {
+              private errorHandlerService: ErrorHandlerService) {
   }
 
   ngOnInit() {
@@ -59,13 +59,13 @@ export class SignUpComponent implements OnInit {
     try {
       this.appLoadingBarService.startLoading();
       // @ts-ignore
-      const user = await this.authService.emailSignUp(newUserSignIn.value);
+      const user = await this.appService.emailSignUp(newUserSignIn.value);
       if (user) {
         this.appLoadingBarService.stopLoading();
         this.notificationService.showSuccessMessage('Sign-Up Successfull!', 'Sign Up');
       }
     } catch (e) {
-      this.errorHandler.handleError(e);
+      this.errorHandlerService.handleError(e);
     }
   }
 

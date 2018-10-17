@@ -3,12 +3,11 @@ import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest}
 import {NotificationService} from '../notifications/notification.service';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
-import {AuthService} from '../../components/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ErrorsHandler implements ErrorHandler {
+export class ErrorHandlerService implements ErrorHandler {
 
   // Because the ErrorHandler is created before the providers, we’ll have to use the Injector to get them.
   notificationService = this.injector.get(NotificationService);

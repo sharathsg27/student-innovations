@@ -8,8 +8,7 @@ export class UserSignInClass {
 
 export class PhoneSignInClass {
   constructor(
-    public country: string = '',
-    public number: string = ''
+    public number: string = '+91'
   ) {
   }
 }

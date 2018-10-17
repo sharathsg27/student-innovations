@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthService} from '../auth/auth.service';
+import {AppService} from '../../services/app.service';
+import {BehaviorSubject} from 'rxjs';
+import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
 
 @Component({
   selector: 'app-home',
@@ -8,14 +10,25 @@ import {AuthService} from '../auth/auth.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  loading: boolean;
   constructor(private router: Router,
-              private authService: AuthService) {
+              private errorHandlerService: ErrorHandlerService,
+              private appService: AppService) {
   }
 
   ngOnInit() {
-    if (this.authService.checkAuth()) console.log('User Verified');
+    this.checkUser();
   }
 
+  async checkUser() {
+    try {
+      const user = await this.appService.checkAuth();
+      if (user) {
+        this.appService.loggedInStaus = new BehaviorSubject<boolean>(true);
+      }
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
+  }
 
 }

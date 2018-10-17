@@ -1,4 +1,4 @@
-import {Component, OnInit, HostBinding} from '@angular/core';
+import {Component, OnInit, HostBinding, AfterContentInit, ElementRef, AfterViewInit, EventEmitter, Output} from '@angular/core';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {AngularFireAuth,} from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -6,10 +6,13 @@ import {Router} from '@angular/router';
 import {UserSignInClass, PhoneSignInClass} from '../../classes/class';
 import {WindowService} from '../../utils/services/window/window.service';
 import {environment} from '../../../environments/environment';
-import {AuthService} from '../auth/auth.service';
 import {MessageService} from '../../utils/messages/message.service';
 import {NotificationService} from '../../utils/notifications/notification.service';
-import {ErrorsHandler} from '../../utils/error-handler/error-handler';
+import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
+import {AppService} from '../../services/app.service';
+import {LoadingBarService} from '@ngx-loading-bar/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {User} from 'firebase';
 
 
 @Component({
@@ -17,45 +20,105 @@ import {ErrorsHandler} from '../../utils/error-handler/error-handler';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements AfterViewInit {
   windowRef: any;
-
+  isLoggedIn: boolean;
+  phoneSignInClass = new PhoneSignInClass();
   newUserSignIn = new UserSignInClass();
-  PhoneSignInClass = new PhoneSignInClass('', null);
-
   provider = new firebase.auth.GoogleAuthProvider();
+  verificationCodeSent: boolean;
   siteToken = environment.phoneSignInSettings.siteToken;
+  @Output() mobileVerified = new EventEmitter<boolean>();
 
-  constructor(public afAuth: AngularFireAuth,
-              private router: Router,
+  constructor(private router: Router,
               private window: WindowService,
               private notificationService: NotificationService,
-              private errorHandler: ErrorsHandler,
-              private authService: AuthService) {
+              private errorHandlerService: ErrorHandlerService,
+              private loadingBarService: LoadingBarService,
+              private elementRef: ElementRef,
+              private appService: AppService) {
+    appService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.checkUser();
+  }
+
+  async checkUser() {
+    try {
+      const user = await this.appService.checkAuth();
+      if (user) {
+        this.isLoggedIn = true;
+      } else {
+        if (this.router.url !== '/registration') {
+          this.router.navigate(['/home']);
+        }
+      }
+      if (!this.isLoggedIn) this.setWindowRecaptcha();
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
+  }
+
+  setWindowRecaptcha() {
     this.windowRef = this.window.windowRef;
-    this.windowRef.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('phone-signIn', {
+    this.windowRef.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
       'size': 'invisible'
+    });
+    this.windowRef.recaptchaVerifier.render().then((widgetId) => {
+      this.windowRef.recaptchaWidgetId = widgetId;
     });
   }
 
 
+  /*// Email Link SignIn
+  sendEmailLink(event, model) {
+    event.preventDefault();
+    try {
+      this.appService.sendEmailLink(model.value).then(result => {
+        if (result) {
+          this.notificationService.showSuccessMessage('Please click the link sent to your account to confirm & login',
+            'Email Verification');
+        }
+      });
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
+  }*/
+
+  /*// Custom SignIn
+  async emailSignIn() {
+    if (this.newUserSignIn && this.newUserSignIn.email && this.newUserSignIn.password) {
+      try {
+        const user = await this.appService.emailSignIn(this.newUserSignIn);
+        if (user) {
+          this.notificationService.showSuccessMessage('Login Successfull!',
+            'Email Login');
+          this.router.navigate(['/home']);
+        }
+      } catch (e) {
+        this.errorHandlerService.handleError(e);
+      }
+    }
+  }*/
+
   // Phone Number SignIn
   async sendVerificationCode(event) {
     event.preventDefault();
-    const phoneNumber = this.PhoneSignInClass.number;
+    const phoneNumber = this.phoneSignInClass.number;
     const appVerifier = this.windowRef.recaptchaVerifier;
 
     try {
+      this.loadingBarService.start();
       this.windowRef.confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier);
       if (this.windowRef.confirmationResult) {
-        this.notificationService.showSuccessMessage('Verification code has been sent to your mobile. Please verify to login.',
-          'Mobile Verification');
+        this.verificationCodeSent = true;
+        this.loadingBarService.stop();
+        this.notificationService.showSuccessMessage
+        ('Please enter the Verification code sent to your Mobile', 'Mobile Login');
       }
     } catch (e) {
-      console.log(e);
+      this.errorHandlerService.handleError(e);
     }
   }
 
@@ -63,58 +126,38 @@ export class LoginComponent implements OnInit {
   async verifyCode(event, model) {
     event.preventDefault();
     try {
-      const result = await this.windowRef.confirmationResult.confirm(model.value);
-      if (result) {
-        this.notificationService.showSuccessMessage('Phone verified successfully!', 'Mobile Verification');
-        this.router.navigate(['/students']);
-      }
+      this.loadingBarService.start();
+      await this.windowRef.confirmationResult.confirm(model.value)
+        .then(result => {
+          if (result) {
+            this.mobileVerified.emit(true);
+            this.appService.loggedInStaus.next(true);
+            this.loadingBarService.stop();
+            this.notificationService.showSuccessMessage('Phone verified successfully!', 'Mobile Verification');
+          }
+        }).catch(e => this.errorHandlerService.handleError(e));
     } catch (e) {
-      this.errorHandler.handleError(e);
+      this.errorHandlerService.handleError(e);
     }
 
-  }
-
-  // Email Link SignIn
-  sendEmailLink(event, model) {
-    event.preventDefault();
-    try {
-      this.authService.sendEmailLink(model.value).then(result => {
-        if (result) {
-          this.notificationService.showSuccessMessage('Please click the link sent to your account to confirm & login',
-            'Email Verification');
-        }
-      });
-    } catch (e) {
-      this.errorHandler.handleError(e);
-    }
-  }
-
-  // Custom SignIn
-  async emailSignIn() {
-    if (this.newUserSignIn && this.newUserSignIn.email && this.newUserSignIn.password) {
-      try {
-        const user = await this.authService.emailSignIn(this.newUserSignIn);
-        if (user) {
-          this.notificationService.showSuccessMessage('Login Successfull!',
-            'Email Login');
-          this.router.navigate(['/home']);
-        }
-      } catch (e) {
-        this.errorHandler.handleError(e);
-      }
-    }
   }
 
   // Google SignIn
   async signInWithGoogle() {
     try {
-      const result = await this.afAuth.auth.signInWithPopup(this.provider);
-      if (result) {
-        this.notificationService.showSuccessMessage('Log in successfully!', 'Google Sign-In');
-        this.router.navigate(['/students']);
-      }
+      this.loadingBarService.start();
+      await this.appService.signInWithGoogle(this.provider)
+        .then(result => {
+          if (result) {
+            this.mobileVerified.emit(true);
+            this.appService.loggedInStaus.next(true);
+            this.loadingBarService.stop();
+            this.notificationService.showSuccessMessage('Log in successfull!', 'Google Sign-In');
+          }
+        })
+        .catch(e => this.errorHandlerService.handleError(e));
     } catch (e) {
-      this.errorHandler.handleError(e);
+      this.errorHandlerService.handleError(e);
     }
   }
 

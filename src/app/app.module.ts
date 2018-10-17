@@ -1,10 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {HomeComponent} from './components/home/home.component';
-import {StudentsComponent} from './components/students/students.component';
 import {AppRoutingModule} from './app.routing.module';
 
 import {AngularFireModule} from 'angularfire2';
@@ -14,35 +13,34 @@ import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {environment} from '../environments/environment';
 import {LoginComponent} from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalComponent} from './utils/modal/modal.component';
-import {RegistrationComponent} from './components/registration/registration.component';
-import {AuthComponent} from './components/auth/auth.component';
 import {SignUpComponent} from './components/sign-up/sign-up.component';
 import {LoadingBarHttpModule} from '@ngx-loading-bar/http';
 import {LoadingBarModule} from '@ngx-loading-bar/core';
-import {UserRegisterComponent} from './user-register/user-register.component';
+import {UserRegisterComponent} from './components/user-register/user-register.component';
 import {UUID} from 'angular2-uuid';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ListIdeasComponent} from './components/ideas/list-ideas/list-ideas.component';
 import {AddIdeaComponent} from './components/ideas/add-idea/add-idea.component';
 import {AngularFireStorageModule} from '@angular/fire/storage';
+import {RegisteredUsersComponent} from './components/registered-users/registered-users.component';
+import {Ng2SmartTableModule} from 'ng2-smart-table';
+import {NgxLoadingModule} from 'ngx-loading';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    StudentsComponent,
     LoginComponent,
     ModalComponent,
-    RegistrationComponent,
-    AuthComponent,
     SignUpComponent,
     UserRegisterComponent,
     ListIdeasComponent,
     AddIdeaComponent
+    UserRegisterComponent,
+    RegisteredUsersComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -50,17 +48,18 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
-    NgbModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     LoadingBarHttpModule,
+    Ng2SmartTableModule,
+    NgxLoadingModule.forRoot({}),
     LoadingBarModule.forRoot(),
     ToastrModule.forRoot(),
     AngularFireStorageModule
   ],
-  providers: [NgbActiveModal, UUID],
+  providers: [UUID],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
