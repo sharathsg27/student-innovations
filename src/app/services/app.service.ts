@@ -37,7 +37,7 @@ export class AppService {
   checkAuth() {
     return new Promise((resolve, reject) => {
       try {
-        firebase.auth().onAuthStateChanged(function (user) {
+        return firebase.auth().onAuthStateChanged(function (user) {
           if (user) {
             resolve(user);
           }
@@ -110,15 +110,15 @@ export class AppService {
     try {
       await this.db.database.ref(api + '/' + this.uuidService.generateUUID).set(data)
         .then((response) => {
-          this.loadingBarService.stopLoading();
+          this.loadingStatus.next(false);
           this.notificationService.showSuccessMessage('Record created successfully!');
         })
         .catch((error: Error) => {
-          this.loadingBarService.stopLoading();
+          this.loadingStatus.next(false);
           this.notificationService.showErrorMessage(error.message);
         });
     } catch (e) {
-      this.loadingBarService.stopLoading();
+      this.loadingStatus.next(false);
       this.errorHandlerService.handleError(e);
     }
   }
@@ -131,7 +131,6 @@ export class AppService {
     try {
       return this.db.database.ref(api).once('value')
         .then(response => {
-          this.notificationService.showSuccessMessage('Records fetched successfully!');
           return response.val();
         })
         .catch((error: Error) => {

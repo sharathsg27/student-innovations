@@ -50,11 +50,6 @@ export class UserRegisterComponent implements OnInit {
     this.checkUser();
     this.getSchoolTypeValues();
     this.buildUserRegisterForm();
-
-  }
-
-  checkMobileVerified(mobileVerified: boolean) {
-    this.isLoggedIn = mobileVerified;
   }
 
   async checkUser() {
@@ -123,7 +118,6 @@ export class UserRegisterComponent implements OnInit {
     this.appService.loadingStatus.next(true);
     // @ts-ignore
     this.appService.createRecord('/registration', form.value);
-    this.appService.loadingStatus.next(false);
   }
 
 }

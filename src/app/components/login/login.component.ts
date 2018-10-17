@@ -22,13 +22,12 @@ import {User} from 'firebase';
 })
 export class LoginComponent implements AfterViewInit {
   windowRef: any;
-  isLoggedIn: boolean;
+  isLoggedIn = false;
   phoneSignInClass = new PhoneSignInClass();
   newUserSignIn = new UserSignInClass();
   provider = new firebase.auth.GoogleAuthProvider();
   verificationCodeSent: boolean;
   siteToken = environment.phoneSignInSettings.siteToken;
-  @Output() mobileVerified = new EventEmitter<boolean>();
 
   constructor(private router: Router,
               private window: WindowService,
@@ -42,6 +41,7 @@ export class LoginComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.checkUser();
+    this.setWindowRecaptcha();
   }
 
   async checkUser() {
@@ -49,12 +49,7 @@ export class LoginComponent implements AfterViewInit {
       const user = await this.appService.checkAuth();
       if (user) {
         this.isLoggedIn = true;
-      } else {
-        if (this.router.url !== '/registration') {
-          this.router.navigate(['/home']);
-        }
       }
-      if (!this.isLoggedIn) this.setWindowRecaptcha();
     } catch (e) {
       this.errorHandlerService.handleError(e);
     }
@@ -107,18 +102,18 @@ export class LoginComponent implements AfterViewInit {
     event.preventDefault();
     const phoneNumber = this.phoneSignInClass.number;
     const appVerifier = this.windowRef.recaptchaVerifier;
-
     try {
-      this.loadingBarService.start();
+      this.appService.loadingStatus.next(true);
       this.windowRef.confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier);
       if (this.windowRef.confirmationResult) {
         this.verificationCodeSent = true;
-        this.loadingBarService.stop();
+        this.appService.loadingStatus.next(false);
         this.notificationService.showSuccessMessage
         ('Please enter the Verification code sent to your Mobile', 'Mobile Login');
       }
     } catch (e) {
       this.errorHandlerService.handleError(e);
+      this.appService.loadingStatus.next(false);
     }
   }
 
@@ -126,18 +121,23 @@ export class LoginComponent implements AfterViewInit {
   async verifyCode(event, model) {
     event.preventDefault();
     try {
-      this.loadingBarService.start();
+      this.appService.loadingStatus.next(true);
       await this.windowRef.confirmationResult.confirm(model.value)
         .then(result => {
           if (result) {
-            this.mobileVerified.emit(true);
+            this.appService.loadingStatus.next(false);
             this.appService.loggedInStaus.next(true);
             this.loadingBarService.stop();
+            this.router.navigate(['/registration']);
             this.notificationService.showSuccessMessage('Phone verified successfully!', 'Mobile Verification');
           }
-        }).catch(e => this.errorHandlerService.handleError(e));
+        }).catch(e => {
+          this.errorHandlerService.handleError(e);
+          this.appService.loadingStatus.next(false);
+        });
     } catch (e) {
       this.errorHandlerService.handleError(e);
+      this.appService.loadingStatus.next(false);
     }
 
   }
@@ -145,19 +145,25 @@ export class LoginComponent implements AfterViewInit {
   // Google SignIn
   async signInWithGoogle() {
     try {
-      this.loadingBarService.start();
+      this.appService.loadingStatus.next(true);
       await this.appService.signInWithGoogle(this.provider)
         .then(result => {
           if (result) {
-            this.mobileVerified.emit(true);
-            this.appService.loggedInStaus.next(true);
+            this.appService.loadingStatus.next(false);
             this.loadingBarService.stop();
+            this.appService.loggedInStaus.next(true);
             this.notificationService.showSuccessMessage('Log in successfull!', 'Google Sign-In');
+            this.router.navigate(['/registration']);
           }
         })
-        .catch(e => this.errorHandlerService.handleError(e));
+        .catch(e => {
+          this.errorHandlerService.handleError(e);
+          this.appService.loadingStatus.next(false);
+          this.router.navigate(['/login']);
+        });
     } catch (e) {
       this.errorHandlerService.handleError(e);
+      this.appService.loadingStatus.next(false);
     }
   }
 

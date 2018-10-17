@@ -28,7 +28,7 @@ export class ErrorHandlerService implements ErrorHandler {
       }
     } else {
       // Handle Client Error (Angular Error, ReferenceError...)
-      this.router.navigate(['/registration']);
+      this.router.navigate(['/login']);
       return this.notificationService.showErrorMessage(`${error.message}`);
     }
   }

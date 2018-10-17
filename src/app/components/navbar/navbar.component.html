@@ -19,7 +19,11 @@
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2 text-hide" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0 text-hide" type="submit">Search</button>
-      <button class="btn btn-outline-light btn-primary my-2 my-sm-0" type="button" routerLink="/registration">Register
+      <button class="btn btn-outline-light btn-primary my-2 my-sm-0" type="button" routerLink="/registration"
+              *ngIf="isLoggedIn">Register
+      </button>
+      <button class="btn btn-outline-light btn-primary my-2 my-sm-0" type="button" routerLink="/login"
+              *ngIf="!isLoggedIn">Login
       </button>
       <button class="btn btn btn-outline-light btn btn-primary my-2 my-sm-0" type="button" *ngIf="isLoggedIn"
               (click)="logout()">Logout

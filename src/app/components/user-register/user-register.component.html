@@ -1,117 +1,118 @@
 <div class="container">
-  <app-login (mobileVerified)="checkMobileVerified($event);" *ngIf="!isLoggedIn"></app-login>
-
-  <form [formGroup]="userRegisterForm" (ngSubmit)="registerUser(userRegisterForm)" *ngIf="isLoggedIn">
-    <h4>User Registration</h4>
-    <div class="form-group">
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="teacherRegister" name="registerType" value="Teacher" formControlName="registerType"
-               class="custom-control-input"
-               (change)="selectRegistrationType($event)">
-        <label class="custom-control-label" for="teacherRegister">By Teacher</label>
+  <div class="d-flex justify-content-center mt-5">
+    <form [formGroup]="userRegisterForm" (ngSubmit)="registerUser(userRegisterForm)" *ngIf="isLoggedIn">
+      <h2>User Registration</h2>
+      <hr>
+      <div class="form-group mt-3">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="teacherRegister" name="registerType" value="Teacher" formControlName="registerType"
+                 class="custom-control-input"
+                 (change)="selectRegistrationType($event)">
+          <label class="custom-control-label" for="teacherRegister">By Teacher</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="postRegister" name="registerType" value="Post" formControlName="registerType"
+                 class="custom-control-input"
+                 (change)="selectRegistrationType($event)">
+          <label class="custom-control-label" for="postRegister">By Post</label>
+        </div>
       </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="postRegister" name="registerType" value="Post" formControlName="registerType"
-               class="custom-control-input"
-               (change)="selectRegistrationType($event)">
-        <label class="custom-control-label" for="postRegister">By Post</label>
-      </div>
-    </div>
-    <div class="form-group">
-      <label><span><i class="material-icons mr-2 align-text-bottom">person</i></span>Teacher</label>
-      <input type="text" class="form-control" formControlName="teacherName" id="teacherName" name="teacherName"
-             placeholder="Teacher Name"
-             [ngClass]="{'is-valid': userRegisterForm.get('teacherName').touched && userRegisterForm.get('teacherName').valid,
+      <div class="form-group">
+        <label><span><i class="material-icons mr-2 align-text-bottom">person</i></span>Teacher</label>
+        <input type="text" class="form-control" formControlName="teacherName" id="teacherName" name="teacherName"
+               placeholder="Teacher Name"
+               [ngClass]="{'is-valid': userRegisterForm.get('teacherName').touched && userRegisterForm.get('teacherName').valid,
                       'is-invalid': userRegisterForm.get('teacherName').touched && userRegisterForm.get('teacherName').invalid}"
-             required/>
-      <div class="invalid-feedback"
-           *ngIf="userRegisterForm.get('teacherName').touched && userRegisterForm.get('teacherName').invalid">
-        <span>{{formRequiredMessage.getFormRequiredMessage('Teacher Name')}}</span>
+               required/>
+        <div class="invalid-feedback"
+             *ngIf="userRegisterForm.get('teacherName').touched && userRegisterForm.get('teacherName').invalid">
+          <span>{{formRequiredMessage.getFormRequiredMessage('Teacher Name')}}</span>
+        </div>
       </div>
-    </div>
-    <div class="form-row">
-      <div class="col-sm-6 mb-3">
-        <label><span><i class="material-icons mr-2 align-text-bottom">business</i></span>School</label>
-        <input type="text" class="form-control" formControlName="schoolName" id="schoolName" name="schoolName"
-               placeholder="School Name"
-               [ngClass]="{'is-valid': userRegisterForm.get('schoolName').touched && userRegisterForm.get('schoolName').valid,
+      <div class="form-row">
+        <div class="col-sm-6 mb-3">
+          <label><span><i class="material-icons mr-2 align-text-bottom">business</i></span>School</label>
+          <input type="text" class="form-control" formControlName="schoolName" id="schoolName" name="schoolName"
+                 placeholder="School Name"
+                 [ngClass]="{'is-valid': userRegisterForm.get('schoolName').touched && userRegisterForm.get('schoolName').valid,
                       'is-invalid': userRegisterForm.get('schoolName').touched && userRegisterForm.get('schoolName').invalid}"
-               required/>
-        <div class="invalid-feedback"
-             *ngIf="userRegisterForm.get('schoolName').touched && userRegisterForm.get('schoolName').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('School Name')}}</span>
+                 required/>
+          <div class="invalid-feedback"
+               *ngIf="userRegisterForm.get('schoolName').touched && userRegisterForm.get('schoolName').invalid">
+            <span>{{formRequiredMessage.getFormRequiredMessage('School Name')}}</span>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-6 mb-3">
-        <label><span><i class="material-icons mr-2 align-text-bottom">keyboard_arrow_down</i></span>Type</label>
-        <select class="form-control" type="text" formControlName="schoolType" id="schoolType" name="schoolType"
-                [ngClass]="{'is-valid': userRegisterForm.get('schoolType').touched && userRegisterForm.get('schoolType').valid,
+        <div class="col-sm-6 mb-3">
+          <label><span><i class="material-icons mr-2 align-text-bottom">keyboard_arrow_down</i></span>Type</label>
+          <select class="form-control" type="text" formControlName="schoolType" id="schoolType" name="schoolType"
+                  [ngClass]="{'is-valid': userRegisterForm.get('schoolType').touched && userRegisterForm.get('schoolType').valid,
                       'is-invalid': userRegisterForm.get('schoolType').touched && userRegisterForm.get('schoolType').invalid}"
-                required>
-          <option value="">Select</option>
-          <option *ngFor="let type of schoolTypeValues" [value]="type">
-            {{type}}
-          </option>
-        </select>
-        <div class="invalid-feedback"
-             *ngIf="userRegisterForm.get('schoolType').touched && userRegisterForm.get('schoolType').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('School Type')}}</span>
+                  required>
+            <option value="">Select</option>
+            <option *ngFor="let type of schoolTypeValues" [value]="type">
+              {{type}}
+            </option>
+          </select>
+          <div class="invalid-feedback"
+               *ngIf="userRegisterForm.get('schoolType').touched && userRegisterForm.get('schoolType').invalid">
+            <span>{{formRequiredMessage.getFormRequiredMessage('School Type')}}</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-row">
-      <div class="col-sm-6 mb-3">
-        <label for="address"><span><i class="material-icons mr-2 align-text-bottom">location_on</i></span>Street
-          Address</label>
-        <textarea class="form-control" id="address" formControlName="address" name="address" placeholder="Address"
-                  [ngClass]="{'is-valid': userRegisterForm.get('address').touched && userRegisterForm.get('address').valid,
+      <div class="form-row">
+        <div class="col-sm-6 mb-3">
+          <label for="address"><span><i class="material-icons mr-2 align-text-bottom">location_on</i></span>Street
+            Address</label>
+          <textarea class="form-control" id="address" formControlName="address" name="address" placeholder="Address"
+                    [ngClass]="{'is-valid': userRegisterForm.get('address').touched && userRegisterForm.get('address').valid,
                       'is-invalid': userRegisterForm.get('address').touched && userRegisterForm.get('address').invalid}"
-                  required></textarea>
-        <div class="invalid-feedback"
-             *ngIf="userRegisterForm.get('address').touched && userRegisterForm.get('address').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('Address')}}</span>
+                    required></textarea>
+          <div class="invalid-feedback"
+               *ngIf="userRegisterForm.get('address').touched && userRegisterForm.get('address').invalid">
+            <span>{{formRequiredMessage.getFormRequiredMessage('Address')}}</span>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-6 mb-3">
-        <label for="pinCode"><span><i
-          class="material-icons mr-2 align-text-bottom">format_list_numbered</i></span>PIN</label>
-        <input type="number" class="form-control" formControlName="pinCode" id="pinCode" name="pinCode"
-               [ngClass]="{'is-valid': userRegisterForm.get('pinCode').touched && userRegisterForm.get('pinCode').valid,
+        <div class="col-sm-6 mb-3">
+          <label for="pinCode"><span><i
+            class="material-icons mr-2 align-text-bottom">format_list_numbered</i></span>PIN</label>
+          <input type="number" class="form-control" formControlName="pinCode" id="pinCode" name="pinCode"
+                 [ngClass]="{'is-valid': userRegisterForm.get('pinCode').touched && userRegisterForm.get('pinCode').valid,
                       'is-invalid': userRegisterForm.get('pinCode').touched && userRegisterForm.get('pinCode').invalid}"
-               placeholder="PIN Code" required/>
-        <div class="invalid-feedback"
-             *ngIf="userRegisterForm.get('pinCode').touched && userRegisterForm.get('pinCode').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('PIN Code')}}</span>
+                 placeholder="PIN Code" required/>
+          <div class="invalid-feedback"
+               *ngIf="userRegisterForm.get('pinCode').touched && userRegisterForm.get('pinCode').invalid">
+            <span>{{formRequiredMessage.getFormRequiredMessage('PIN Code')}}</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="form-row">
-      <div class="col-sm-6 mb-3">
-        <label for="city"><span><i
-          class="material-icons mr-2 align-text-bottom">location_city</i></span>City/District</label>
-        <input type="text" class="form-control" id="city" formControlName="city" name="city" placeholder="District"
-               [ngClass]="{'is-valid': userRegisterForm.get('city').touched && userRegisterForm.get('city').valid,
+      <div class="form-row">
+        <div class="col-sm-6 mb-3">
+          <label for="city"><span><i
+            class="material-icons mr-2 align-text-bottom">location_city</i></span>City/District</label>
+          <input type="text" class="form-control" id="city" formControlName="city" name="city" placeholder="District"
+                 [ngClass]="{'is-valid': userRegisterForm.get('city').touched && userRegisterForm.get('city').valid,
                       'is-invalid': userRegisterForm.get('city').touched && userRegisterForm.get('city').invalid}"
-               required/>
-        <div class="invalid-feedback"
-             *ngIf="userRegisterForm.get('city').touched && userRegisterForm.get('city').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('City')}}</span>
+                 required/>
+          <div class="invalid-feedback"
+               *ngIf="userRegisterForm.get('city').touched && userRegisterForm.get('city').invalid">
+            <span>{{formRequiredMessage.getFormRequiredMessage('City')}}</span>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-6 mb-3">
-        <label for="state"><span><i class="material-icons mr-2 align-text-bottom">ac_unit</i></span>State</label>
-        <input type="text" class="form-control" formControlName="state" id="state" name="state" placeholder="State"
-               [ngClass]="{'is-valid': userRegisterForm.get('state').touched && userRegisterForm.get('state').valid,
+        <div class="col-sm-6 mb-3">
+          <label for="state"><span><i class="material-icons mr-2 align-text-bottom">ac_unit</i></span>State</label>
+          <input type="text" class="form-control" formControlName="state" id="state" name="state" placeholder="State"
+                 [ngClass]="{'is-valid': userRegisterForm.get('state').touched && userRegisterForm.get('state').valid,
                       'is-invalid': userRegisterForm.get('state').touched && userRegisterForm.get('state').invalid}"
-               required/>
-        <div class="invalid-feedback"
-             *ngIf="userRegisterForm.get('state').touched && userRegisterForm.get('state').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('State')}}</span>
+                 required/>
+          <div class="invalid-feedback"
+               *ngIf="userRegisterForm.get('state').touched && userRegisterForm.get('state').invalid">
+            <span>{{formRequiredMessage.getFormRequiredMessage('State')}}</span>
+          </div>
         </div>
       </div>
-    </div>
-    <button class="btn btn-primary" type="submit" [disabled]="userRegisterForm.invalid">Submit form</button>
-  </form>
+      <button class="btn btn-success btn-lg" type="submit" [disabled]="userRegisterForm.invalid">Submit</button>
+    </form>
+  </div>
 
 </div>

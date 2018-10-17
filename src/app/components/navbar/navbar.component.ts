@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
         this.isLoggedIn = false;
         this.appService.loggedInStaus.next(this.isLoggedIn);
         this.loadingBarService.stop();
-        this.router.navigate(['/registration']);
+        this.router.navigate(['/login']);
       })
       .catch(e => {
         this.errorHandlerService.handleError(e);
