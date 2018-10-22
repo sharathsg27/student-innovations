@@ -69,7 +69,7 @@ export class AddIdeaComponent implements OnInit {
     // @ts-ignore
     if (!form.value) return;
     // @ts-ignore
-    if (this.loggedInUser.uid) form.value.userId = this.loggedInUser.uid;
+    if (this.loggedInUser && this.loggedInUser.uid) form.value.userId = this.loggedInUser.uid;
     // @ts-ignore
     form.value.submittedDate = new Date().toISOString().split('T')[0];
     /*let newPostKey = firebase.database().ref().child('ideas').push().key;

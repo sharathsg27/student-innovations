@@ -16,8 +16,8 @@ export class IdeasService {
   async getAllRecord(api: string, filters) {
     try {
       return await this.db.database.ref(api)
-        .orderByChild(filters['keyFilter'])
-        .equalTo(filters['valueFilter'])
+      /*.orderByChild(filters['keyFilter'])
+      .equalTo(filters['valueFilter'])*/
         .once('value')
         .then(response => {
           return response.val();
