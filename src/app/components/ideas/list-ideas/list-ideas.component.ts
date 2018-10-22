@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {IdeasService} from '../../../services/ideas.service';
 import {AppService} from '../../../services/app.service';
 import * as firebase from 'firebase';
+import {ErrorHandlerService} from '../../../utils/error-handler/error-handler';
 
 
 @Component({
@@ -28,6 +29,11 @@ export class ListIdeasComponent implements OnInit {
         title: 'Idea Submitted Date'
       }
     },
+    actions: {
+      add: false,
+      edit: false,
+      delete: false,
+    },
     /*actions: {
       add: false,
       edit: false,
@@ -48,18 +54,31 @@ export class ListIdeasComponent implements OnInit {
       class: 'table'
     }
   };
-  loggedInUser = firebase.auth().currentUser.uid;
+  loggedInUser;
   filters = {
     keyFilter: 'userId',
     valueFilter: this.loggedInUser
-  }
+  };
 
   constructor(private ideasService: IdeasService,
+              private errorHandlerService: ErrorHandlerService,
               private appService: AppService) {
   }
 
   ngOnInit() {
     this.getAllIdeas();
+    this.checkUser();
+  }
+
+  async checkUser() {
+    try {
+      const user = await this.appService.checkAuth();
+      if (user) {
+        this.loggedInUser = user;
+      }
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
   }
 
   async getAllIdeas() {
