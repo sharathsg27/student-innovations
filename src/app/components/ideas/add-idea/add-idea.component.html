@@ -39,13 +39,16 @@
         <input type="text"
                class="form-control"
                id="studentSection"
+               formControlName="studentSection"
                name="studentSection">
       </div>
       <div class="form-group col-sm-6">
         <label for="studentRollNumber">Roll Number:</label>
         <input type="text"
+               formControlName="studentRollNumber"
                class="form-control"
                id="studentRollNumber"
+               autocomplete="off"
                name="studentRollNumber">
       </div>
     </div>
@@ -76,7 +79,7 @@
                accept=".png,.jpg">
         <progress max="100" [value]="(uploadProgress | async)"></progress>
       </div>
-      <div *ngIf="uploadedPhotos">
+      <div *ngIf="uploadedPhotos.length">
         <p>uploaded Photos</p>
         <ul class="list-group">
           <li *ngFor="let eachPhoto of uploadedPhotos" class="list-group-item">
@@ -87,10 +90,11 @@
     </div>
     <div class="form-row">
       <div class="form-group col-sm-6">
-        <label for="videoLinks">Video Links:</label>
+        <label for="videoLinks">Video Link:</label>
         <input type="url"
                class="form-control"
                formControlName="videoLinks"
+               name="videoLinks"
                id="videoLinks"
                [ngClass]="{'is-valid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').valid,
                       'is-invalid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid}">
@@ -100,6 +104,28 @@
         </div>
       </div>
     </div>
+    <!--    <div class="form-row" *ngIf="videoLinks">
+          <div class="form-group col-sm-6" *ngFor="let videoLink of videoLinks; let i=index">
+            <label for="videoLink-{{i}}">Video Links:</label>
+            <input type="url"
+                   class="form-control"
+                   formControlName="videoLinks"
+                   [(ngModel)]="videoLink[i]"
+                   id="videoLink-{{i}}"
+                   [ngClass]="{'is-valid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').valid,
+                          'is-invalid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid}">
+            <div class="invalid-feedback"
+                 *ngIf="ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid">
+              <span>{{formRequiredMessage.getFormInvalidMessage('video link')}}</span>
+            </div>
+            <a href="javascript:void(0);"
+               class="btn-circle-icon btn-info m-l-25"
+               ng-click="addVideoLink()"
+               tooltip="Add Video Link">
+              <i class="material-icons">add</i>
+            </a>
+          </div>
+        </div>-->
     <div class="form-row">
       <div class="form-group col-sm-6">
         <button type="submit" class="btn btn-primary" [disabled]="ideaForm.invalid">Add</button>

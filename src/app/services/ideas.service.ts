@@ -13,9 +13,12 @@ export class IdeasService {
   }
 
   /*list ideas*/
-  async getAllRecord(api: string) {
+  async getAllRecord(api: string, filters) {
     try {
-      return await this.db.database.ref(api).once('value')
+      return await this.db.database.ref(api)
+        .orderByChild(filters['keyFilter'])
+        .equalTo(filters['valueFilter'])
+        .once('value')
         .then(response => {
           return response.val();
         })

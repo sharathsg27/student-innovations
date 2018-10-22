@@ -38,7 +38,7 @@ import {NgxLoadingModule} from 'ngx-loading';
     SignUpComponent,
     UserRegisterComponent,
     ListIdeasComponent,
-    AddIdeaComponent
+    AddIdeaComponent,
     UserRegisterComponent,
     RegisteredUsersComponent
   ],

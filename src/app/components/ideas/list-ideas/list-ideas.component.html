@@ -1,29 +1,8 @@
 <section class="container">
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Student Name</th>
-      <th scope="col">Class</th>
-      <th scope="col">Roll Number</th>
-      <th scope="col">submitted date</th>
-      <th scope="col">Action</th>
-
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let idea of ideas$; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>{{idea?.studentName}}</td>
-      <td>{{idea?.class}}</td>
-      <td>{{idea?.roolNumber}}</td>
-      <td>{{idea?.submittedDate | date}}</td>
-      <td><i class="material-icons">pageview</i>view</td>
-    </tr>
-    </tbody>
-  </table>
+  <ng2-smart-table [settings]="settings"
+                   [source]="ideas$"
+                   (custom)="onCustom($event)"></ng2-smart-table>
 </section>
-
 <section class="page-action-panel">
   <div class="page-action-buttons">
     <button type="button" class="btn btn-primary" routerLink="/add-idea" routerLinkActive="active">

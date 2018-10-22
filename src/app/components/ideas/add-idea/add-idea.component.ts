@@ -8,6 +8,7 @@ import * as firebase from 'firebase';
 import {map} from 'rxjs/operators';
 import {NotificationService} from '../../../utils/notifications/notification.service';
 import {Router} from '@angular/router';
+import {AppService} from '../../../services/app.service';
 
 @Component({
   selector: 'app-add-idea',
@@ -20,15 +21,16 @@ export class AddIdeaComponent implements OnInit {
   uploadedPhotos = [];
   formRequiredMessage = new MessageService();
   uploadProgress;
+  videoLinks: any = [];
   private uploadPath = '/uploads/photos';
 
-  constructor(private fb: FormBuilder,
+  constructor(private appService: AppService,
+              private fb: FormBuilder,
               private router: Router,
               private messages: MessageService,
               private ideasService: IdeasService,
               private afStorage: AngularFireStorage,
               private notificationService: NotificationService) {
-    console.log(this.loggedInUser);
   }
 
   ngOnInit() {
@@ -56,14 +58,22 @@ export class AddIdeaComponent implements OnInit {
       ]
       ],
       'photos': [this.uploadedPhotos, []],
-      'videoLinks': ['', [
+      'videoLinks': [this.videoLinks, [
         Validators.pattern('^http(s)?:\\/\\/(www\\.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$'),
       ]
       ]
     });
   }
 
-  async addIdea(form: IdeaClass) {
+  async addIdea(form: IdeaClass) {// Get a key for a new Post.
+    // @ts-ignore
+    if (!form.value) return;
+    // @ts-ignore
+    if (this.loggedInUser.uid) form.value.userId = this.loggedInUser.uid;
+    // @ts-ignore
+    form.value.submittedDate = new Date().toISOString().split('T')[0];
+    /*let newPostKey = firebase.database().ref().child('ideas').push().key;
+      console.log(newPostKey)*/
     // @ts-ignore
     await this.ideasService.createRecord('/ideas', form.value);
     this.notificationService.showSuccessMessage('Idea added successfully');
@@ -75,11 +85,12 @@ export class AddIdeaComponent implements OnInit {
     let task;
 
     for (let i = 0; i < event.target.files.length; i++) {
+      let uploadedFileType = event.target.files[i].type;
+      uploadedFileType = uploadedFileType.split('/')[1];
       const randomId = Math.random().toString(36).substring(2);
-      let filePath = `uploads/photos/${randomId}`;
+      let filePath = `uploads/photos/${randomId}.${uploadedFileType}`;
       ref = this.afStorage.ref(filePath);
       task = ref.put(event.target.files[i]);
-      console.log(task.task.location_.path);
       // @ts-ignore
       this.uploadProgress = task.snapshotChanges().pipe(map(s => (s.bytesTransferred / s.totalBytes) * 100));
       this.uploadedPhotos.push({
@@ -88,6 +99,10 @@ export class AddIdeaComponent implements OnInit {
       });
     }
     this.notificationService.showSuccessMessage('Photo uploaded successfully');
+  }
+
+  addVideoLink() {
+
   }
 
 }
