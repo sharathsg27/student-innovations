@@ -41,7 +41,7 @@ export class RegisteredUsersComponent implements OnInit {
     pager: {
       perPage: 20
     },
-    noDataMessage: 'No Registered records found'
+    noDataMessage: ''
   };
 
   constructor(private appService: AppService) {

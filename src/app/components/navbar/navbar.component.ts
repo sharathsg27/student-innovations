@@ -47,7 +47,7 @@ export class NavbarComponent implements OnInit {
     this.appService.logOut()
       .then((success) => {
         this.isLoggedIn = false;
-        this.appService.loggedInStaus.next(this.isLoggedIn);
+        this.appService.loggedInStatus.next(this.isLoggedIn);
         this.loadingBarService.stop();
         this.router.navigate(['/login']);
       })

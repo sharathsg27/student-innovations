@@ -126,7 +126,7 @@ export class LoginComponent implements AfterViewInit {
         .then(result => {
           if (result) {
             this.appService.loadingStatus.next(false);
-            this.appService.loggedInStaus.next(true);
+            this.appService.loggedInStatus.next(true);
             this.loadingBarService.stop();
             this.router.navigate(['/registration']);
             this.notificationService.showSuccessMessage('Phone verified successfully!', 'Mobile Verification');
@@ -151,7 +151,7 @@ export class LoginComponent implements AfterViewInit {
           if (result) {
             this.appService.loadingStatus.next(false);
             this.loadingBarService.stop();
-            this.appService.loggedInStaus.next(true);
+            this.appService.loggedInStatus.next(true);
             this.notificationService.showSuccessMessage('Log in successfull!', 'Google Sign-In');
             this.router.navigate(['/registration']);
           }
@@ -166,5 +166,4 @@ export class LoginComponent implements AfterViewInit {
       this.appService.loadingStatus.next(false);
     }
   }
-
 }

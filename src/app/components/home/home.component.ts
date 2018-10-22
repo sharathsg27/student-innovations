@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     try {
       const user = await this.appService.checkAuth();
       if (user) {
-        this.appService.loggedInStaus = new BehaviorSubject<boolean>(true);
+        this.appService.loggedInStatus = new BehaviorSubject<boolean>(true);
       }
     } catch (e) {
       this.errorHandlerService.handleError(e);

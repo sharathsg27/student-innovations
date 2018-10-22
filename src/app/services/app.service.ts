@@ -17,10 +17,10 @@ import {AppLoadingBarService} from '../utils/loading-bar/loading-bar.service';
 })
 export class AppService {
   // Observable string sources
-  loggedInStaus = new Subject<boolean>();
+  loggedInStatus = new Subject<boolean>();
   loadingStatus = new Subject<boolean>();
   // Observable string streams
-  isLoggedIn$ = this.loggedInStaus.asObservable();
+  isLoggedIn$ = this.loggedInStatus.asObservable();
   isLoading$ = this.loadingStatus.asObservable();
 
   // Observable string sources
