@@ -11,5 +11,9 @@ export class MessageService {
   getFormRequiredMessage(field: string): string {
     return `${field} is required!`;
   }
+
+  getFormInvalidMessage(field: string): string {
+    return `Invalid ${field}!`;
+  }
 }
 

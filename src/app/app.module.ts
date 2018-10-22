@@ -21,6 +21,9 @@ import {UserRegisterComponent} from './components/user-register/user-register.co
 import {UUID} from 'angular2-uuid';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ListIdeasComponent} from './components/ideas/list-ideas/list-ideas.component';
+import {AddIdeaComponent} from './components/ideas/add-idea/add-idea.component';
+import {AngularFireStorageModule} from '@angular/fire/storage';
 import {RegisteredUsersComponent} from './components/registered-users/registered-users.component';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {NgxLoadingModule} from 'ngx-loading';
@@ -33,6 +36,9 @@ import {NgxLoadingModule} from 'ngx-loading';
     LoginComponent,
     ModalComponent,
     SignUpComponent,
+    UserRegisterComponent,
+    ListIdeasComponent,
+    AddIdeaComponent,
     UserRegisterComponent,
     RegisteredUsersComponent
   ],
@@ -50,7 +56,8 @@ import {NgxLoadingModule} from 'ngx-loading';
     Ng2SmartTableModule,
     NgxLoadingModule.forRoot({}),
     LoadingBarModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    AngularFireStorageModule
   ],
   providers: [UUID],
   bootstrap: [AppComponent]
