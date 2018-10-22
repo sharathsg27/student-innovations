@@ -106,9 +106,9 @@ export class AppService {
    * @param api
    * @param data
    */
-  async createRecord(api: string, data: Object) {
+  createRecord(api: string, data: Object) {
     try {
-      await this.db.database.ref(api + '/' + this.uuidService.generateUUID).set(data)
+      this.db.database.ref(api + '/' + this.uuidService.generateUUID).set(data)
         .then((response) => {
           this.loadingStatus.next(false);
           this.notificationService.showSuccessMessage('Record created successfully!');

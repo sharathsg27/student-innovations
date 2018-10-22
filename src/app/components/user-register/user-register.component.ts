@@ -106,18 +106,23 @@ export class UserRegisterComponent implements OnInit {
     });
   }
 
-  registerUser(form: UserRegisterClass) {
-    // @ts-ignore
-    if (!form.value) {
-      return;
-    }
-    if (this.user) {
+  async registerUser(form: UserRegisterClass) {
+    try {
       // @ts-ignore
-      form.value.userId = this.user.uid;
+      if (!form.value) {
+        return;
+      }
+      if (this.user) {
+        // @ts-ignore
+        form.value.userId = this.user.uid;
+      }
+      this.appService.loadingStatus.next(true);
+      // @ts-ignore
+      await this.appService.createRecord('/registration', form.value);
+      this.router.navigate(['/users']);
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
     }
-    this.appService.loadingStatus.next(true);
-    // @ts-ignore
-    this.appService.createRecord('/registration', form.value);
   }
 
 }

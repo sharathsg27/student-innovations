@@ -14,7 +14,7 @@ import {AppService} from '../../services/app.service';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements OnInit {
-  signUpForm: FormGroup;
+  signUpForm;
   formRequiredMessage = new MessageService();
 
   constructor(private appService: AppService,
