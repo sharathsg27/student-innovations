@@ -1,38 +1,33 @@
-<nav class="navbar navbar-expand-xl navbar-dark bg-navbar">
-  <ngx-loading-bar [color]="'rgba(248, 249, 250, 0.5)'" [includeSpinner]="false" [height]="'55px'"
-                   [diameter]="0"></ngx-loading-bar>
-  <a class="navbar-brand" routerLink="/home">ST - Innovations</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<div class="container-fluid p-0">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-navbar">
+    <ngx-loading-bar [color]="'rgba(248, 249, 250, 0.5)'" [includeSpinner]="false" [height]="'55px'"
+                     [diameter]="0"></ngx-loading-bar>
+    <a class="navbar-brand text-white">ST - Innovations</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/home" routerLinkActive="active">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/ideas" routerLinkActive="active">Ideas</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2 text-hide" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0 text-hide" type="submit">Search</button>
-      <button class="btn btn-outline-light btn-primary my-2 my-sm-0" type="button" routerLink="/registration"
-              *ngIf="isLoggedIn">Register
-      </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" *ngIf="isRegistrationComplete || !isLoggedIn">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">Home <span
+            class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item d-none" *ngIf="isRegistrationComplete || !isLoggedIn">
+          <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+        </li>
+        <li class="nav-item" *ngIf="isRegistrationComplete || !isLoggedIn">
+          <a class="nav-link" routerLink="/ideas" routerLinkActive="active">Ideas</a>
+        </li>
+      </ul>
       <button class="btn btn-outline-light btn-primary my-2 my-sm-0" type="button" routerLink="/login"
               *ngIf="!isLoggedIn">Login
       </button>
       <button class="btn btn btn-outline-light btn btn-primary my-2 my-sm-0" type="button" *ngIf="isLoggedIn"
               (click)="logout()">Logout
       </button>
-    </form>
-  </div>
-</nav>
-
-<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+    </div>
+  </nav>
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+</div>

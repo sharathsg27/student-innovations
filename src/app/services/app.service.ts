@@ -19,11 +19,12 @@ export class AppService {
   // Observable string sources
   loggedInStatus = new Subject<boolean>();
   loadingStatus = new Subject<boolean>();
+  registrationCompleteStatus = new Subject<boolean>();
+
   // Observable string streams
   isLoggedIn$ = this.loggedInStatus.asObservable();
   isLoading$ = this.loadingStatus.asObservable();
-
-  // Observable string sources
+  isRegistrationComplete$ = this.registrationCompleteStatus.asObservable();
 
   constructor(private uuidService: UUIDService,
               private router: Router,

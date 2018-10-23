@@ -24,8 +24,8 @@ export class UserRegisterComponent implements OnInit {
   // Initializations
   user: Object;
   isLoggedIn: boolean;
+  isRegistrationComplete = false;
   userRegisterForm: FormGroup;
-  setUserRegisterForm = false;
   formRequiredMessage = new MessageService();
   schoolTypeValues: Array<SchoolTypeClass> = [];
   formValidator = [Validators.required, Validators.min(1)];
@@ -41,9 +41,8 @@ export class UserRegisterComponent implements OnInit {
               private loadingBarService: AppLoadingBarService,
               private errorHandlerService: ErrorHandlerService) {
 
-    appService.isLoggedIn$.subscribe(isLoggedIn => {
-      this.isLoggedIn = isLoggedIn;
-    });
+    appService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    appService.isRegistrationComplete$.subscribe(isRegistrationComplete => this.isRegistrationComplete = isRegistrationComplete);
   }
 
   ngOnInit() {
@@ -57,7 +56,6 @@ export class UserRegisterComponent implements OnInit {
       const user = await this.appService.checkAuth();
       if (user) {
         this.isLoggedIn = true;
-        this.setUserRegisterForm = true;
         this.user = user;
       } else {
         if (this.router.url !== '/registration') {
@@ -119,6 +117,7 @@ export class UserRegisterComponent implements OnInit {
       this.appService.loadingStatus.next(true);
       // @ts-ignore
       await this.appService.createRecord('/registration', form.value);
+      this.appService.registrationCompleteStatus.next(true);
       this.router.navigate(['/users']);
     } catch (e) {
       this.errorHandlerService.handleError(e);

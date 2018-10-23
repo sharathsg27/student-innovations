@@ -41,6 +41,9 @@ export class RegisteredUsersComponent implements OnInit {
     pager: {
       perPage: 20
     },
+    attr: {
+      class: 'table'
+    },
     noDataMessage: ''
   };
 

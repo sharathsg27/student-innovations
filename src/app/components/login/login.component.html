@@ -13,20 +13,25 @@
       <button type="submit" class="btn btn-danger btn-lg d-none" (click)="emailSignIn()">Login</button>-->
       <h2>Login</h2>
       <hr>
-      <div class="form-group mt-3" *ngIf="!verificationCodeSent" id="mobile-verification">
+      <div class="form-group mt-3" *ngIf="!verificationCodeSent">
         <label for="mobile"><span><i
           class="material-icons mr-2 align-text-bottom">phone_android</i>Mobile</span></label>
-        <input type="text" class="form-control mb-3" name="mobile" id="mobile" [(ngModel)]="phoneSignInClass.number"
-               placeholder="(+91)-92******43" [minlength]="13" [maxlength]="13" required>
-        <button type="submit" class="btn btn-primary btn-lg g-recaptcha" id="recaptcha-container"
+        <input type="text" class="form-control" [ngClass]="{'mb-0': mobile.invalid }" name="mobile" id="mobile"
+               [(ngModel)]="phoneSignInClass.number" #mobile="ngModel"
+               placeholder="(+91)-92******43" [minlength]="13" [maxlength]="13" required autofocus/>
+        <div class="invalid-text" *ngIf="mobile.touched && mobile.invalid">
+          {{formRequiredMessage.getFormRequiredMessage('A valid Mobile No.')}}
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg g-recaptcha mt-3" id="recaptcha-container"
+                [ngClass]="{'disabled': !mobile.valid}"
                 [attr.data-sitekey]="siteToken"
-                (click)="sendVerificationCode($event)">Send Verification Code
+                (click)="mobile.valid && sendVerificationCode($event)">Send Verification Code
         </button>
       </div>
       <div class="form-group" *ngIf="verificationCodeSent">
         <input type="text" class="form-control mb-3" name="emailLink" id="verifyCode" ngModel
                #verificationCode="ngModel"
-               placeholder="Code" required/>
+               placeholder="Code" required autofocus/>
 
         <button type="submit" class="btn btn-success btn-lg" (click)="verifyCode($event, verificationCode)">Verify Code
         </button>

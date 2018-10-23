@@ -25,6 +25,7 @@ export class LoginComponent implements AfterViewInit {
   isLoggedIn = false;
   phoneSignInClass = new PhoneSignInClass();
   provider = new firebase.auth.GoogleAuthProvider();
+  formRequiredMessage = new MessageService();
   verificationCodeSent: boolean;
   siteToken = environment.phoneSignInSettings.siteToken;
 
