@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {IdeasService} from '../../../services/ideas.service';
 import {AppService} from '../../../services/app.service';
-import * as firebase from 'firebase';
 import {ErrorHandlerService} from '../../../utils/error-handler/error-handler';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -14,6 +14,7 @@ import {ErrorHandlerService} from '../../../utils/error-handler/error-handler';
 export class ListIdeasComponent implements OnInit {
   loading: boolean;
   ideas$: any[];
+  loggedInUserId;
   settings = {
     columns: {
       studentName: {
@@ -32,20 +33,15 @@ export class ListIdeasComponent implements OnInit {
     actions: {
       add: false,
       edit: false,
-      delete: false,
-    },
-    /*actions: {
-      add: false,
-      edit: false,
       delete: false ,
       custom: [
         {
-          name: 'View',
-          title: '<span class="btn-icon"><i class="material-icons">visibility</i>View </span>'
+          name: '',
+          title: '<span title="View Idea"><i class="material-icons">visibility</i></span>'
         }
       ],
       position: 'right'
-    },*/
+    },
     pager: {
       perPage: 20
     },
@@ -54,19 +50,19 @@ export class ListIdeasComponent implements OnInit {
       class: 'table'
     }
   };
-  loggedInUser;
   filters = {
     keyFilter: 'userId',
-    valueFilter: this.loggedInUser
+    valueFilter: this.loggedInUserId
   };
+
 
   constructor(private ideasService: IdeasService,
               private errorHandlerService: ErrorHandlerService,
-              private appService: AppService) {
+              private appService: AppService,
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.getAllIdeas();
     this.checkUser();
   }
 
@@ -74,7 +70,10 @@ export class ListIdeasComponent implements OnInit {
     try {
       const user = await this.appService.checkAuth();
       if (user) {
-        this.loggedInUser = user;
+        // @ts-ignore
+        this.loggedInUserId = user.uid;
+        this.filters.valueFilter = this.loggedInUserId;
+        this.getAllIdeas();
       }
     } catch (e) {
       this.errorHandlerService.handleError(e);
@@ -84,15 +83,22 @@ export class ListIdeasComponent implements OnInit {
   async getAllIdeas() {
     this.appService.loadingStatus.next(true);
     let data = await this.ideasService.getAllRecord('/ideas', this.filters);
-    this.ideas$ = Object.values(data);
-    /*for (let idea of this.ideas$){
-      idea.submittedDate = this.datePipe.transform(idea.submittedDate, 'dd MMM yyyy');
-    }*/
+    if (data) {
+      this.ideas$ = Object.values(data);
+      for (let i = 0; i < this.ideas$.length; i++) {
+        if (this.ideas$[i].submittedDate) {
+          this.ideas$[i].submittedDate = this.appService.convertDate(this.ideas$[i].submittedDate);
+        }
+      }
+    }
     this.appService.loadingStatus.next(false);
   }
 
   onCustom(event) {
-    console.log(event);
+    let ideaId = event.data._id;
+    this.router.navigate([`/view-idea/${ideaId}`]);
   }
+
+
 
 }

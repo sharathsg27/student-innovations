@@ -4,11 +4,11 @@ import {MessageService} from '../../../utils/messages/message.service';
 import {IdeaClass} from '../../../classes/class';
 import {IdeasService} from '../../../services/ideas.service';
 import {AngularFireStorage} from '@angular/fire/storage';
-import * as firebase from 'firebase';
 import {map} from 'rxjs/operators';
 import {NotificationService} from '../../../utils/notifications/notification.service';
 import {Router} from '@angular/router';
 import {AppService} from '../../../services/app.service';
+import {ErrorHandlerService} from '../../../utils/error-handler/error-handler';
 
 @Component({
   selector: 'app-add-idea',
@@ -17,11 +17,11 @@ import {AppService} from '../../../services/app.service';
 })
 export class AddIdeaComponent implements OnInit {
   ideaForm: FormGroup;
-  loggedInUser = firebase.auth().currentUser;
+  loggedInUserId;
   uploadedPhotos = [];
   formRequiredMessage = new MessageService();
   uploadProgress;
-  videoLinks: any = [];
+  videoLink: any = [];
   private uploadPath = '/uploads/photos';
 
   constructor(private appService: AppService,
@@ -30,10 +30,12 @@ export class AddIdeaComponent implements OnInit {
               private messages: MessageService,
               private ideasService: IdeasService,
               private afStorage: AngularFireStorage,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private errorHandlerService: ErrorHandlerService) {
   }
 
   ngOnInit() {
+    this.checkUser();
     this.buildForm();
   }
 
@@ -49,31 +51,42 @@ export class AddIdeaComponent implements OnInit {
       'studentClass': ['', [
         Validators.required,
         Validators.pattern('^\\d+$'),
+        Validators.min(1),
+        Validators.max(10)
       ]
       ],
       'studentSection': ['', []],
-      'studentRollNumber': ['', []],
+      'studentRollNumber': ['', [Validators.required]],
       'idea': ['', [
         Validators.required
       ]
       ],
       'photos': [this.uploadedPhotos, []],
-      'videoLinks': [this.videoLinks, [
+      'videoLink': [this.videoLink, [
         Validators.pattern('^http(s)?:\\/\\/(www\\.)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$'),
       ]
       ]
     });
   }
 
+  async checkUser() {
+    try {
+      const user = await this.appService.checkAuth();
+      if (user) {
+        // @ts-ignore
+        this.loggedInUserId = user.uid;
+      }
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
+  }
   async addIdea(form: IdeaClass) {// Get a key for a new Post.
     // @ts-ignore
     if (!form.value) return;
     // @ts-ignore
-    if (this.loggedInUser && this.loggedInUser.uid) form.value.userId = this.loggedInUser.uid;
+    if (this.loggedInUserId && this.loggedInUserId) form.value.userId = this.loggedInUserId;
     // @ts-ignore
-    form.value.submittedDate = new Date().toISOString().split('T')[0];
-    /*let newPostKey = firebase.database().ref().child('ideas').push().key;
-      console.log(newPostKey)*/
+    form.value.submittedDate = new Date().toString();
     // @ts-ignore
     await this.ideasService.createRecord('/ideas', form.value);
     this.notificationService.showSuccessMessage('Idea added successfully');
@@ -99,10 +112,6 @@ export class AddIdeaComponent implements OnInit {
       });
     }
     this.notificationService.showSuccessMessage('Photo uploaded successfully');
-  }
-
-  addVideoLink() {
-
   }
 
 }

@@ -58,7 +58,7 @@ export class IdeaClass {
     public studentRollNumber: string = '',
     public idea: string = '',
     public photos: any[],
-    public videoLinks: any[],
+    public videoLink: any[],
     public userId: string = '',
     public submittedDate: string = ''
   ) {

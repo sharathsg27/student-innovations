@@ -21,12 +21,14 @@ import {UserRegisterComponent} from './components/user-register/user-register.co
 import {UUID} from 'angular2-uuid';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ListIdeasComponent} from './components/ideas/list-ideas/list-ideas.component';
-import {AddIdeaComponent} from './components/ideas/add-idea/add-idea.component';
+import {ListIdeasComponent} from './components/ideas/list/list-ideas.component';
+import {AddIdeaComponent} from './components/ideas/add/add-idea.component';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {RegisteredUsersComponent} from './components/registered-users/registered-users.component';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {NgxLoadingModule} from 'ngx-loading';
+import {ViewIdeaComponent} from './components/ideas/view/view-idea.component';
+import {NgbCarouselConfig, NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import {NgxLoadingModule} from 'ngx-loading';
     ListIdeasComponent,
     AddIdeaComponent,
     UserRegisterComponent,
-    RegisteredUsersComponent
+    RegisteredUsersComponent,
+    ViewIdeaComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -57,9 +60,10 @@ import {NgxLoadingModule} from 'ngx-loading';
     NgxLoadingModule.forRoot({}),
     LoadingBarModule.forRoot(),
     ToastrModule.forRoot(),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    NgbCarouselModule
   ],
-  providers: [UUID],
+  providers: [UUID, NgbCarouselConfig],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

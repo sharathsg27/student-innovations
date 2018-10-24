@@ -24,12 +24,14 @@
                formControlName="studentClass"
                id="studentClass"
                name="studentClass"
+               min="1"
+               max="10"
                [ngClass]="{'is-valid': ideaForm.get('studentClass').touched && ideaForm.get('studentClass').valid,
                       'is-invalid': ideaForm.get('studentClass').touched && ideaForm.get('studentClass').invalid}"
                required>
         <div class="invalid-feedback"
              *ngIf="ideaForm.get('studentClass').touched && ideaForm.get('studentClass').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('Class')}}</span>
+          <span>{{formRequiredMessage.getFormInvalidMessage('student class')}}</span>
         </div>
       </div>
     </div>
@@ -49,7 +51,14 @@
                class="form-control"
                id="studentRollNumber"
                autocomplete="off"
-               name="studentRollNumber">
+               name="studentRollNumber"
+               required
+               [ngClass]="{'is-valid': ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').valid,
+                      'is-invalid': ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').invalid}">
+        <div class="invalid-feedback"
+             *ngIf="ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').invalid">
+          <span>{{formRequiredMessage.getFormRequiredMessage('Student roll number')}}</span>
+        </div>
       </div>
     </div>
     <div class="form-row">
@@ -90,42 +99,20 @@
     </div>
     <div class="form-row">
       <div class="form-group col-sm-6">
-        <label for="videoLinks">Video Link:</label>
+        <label for="videoLink">Video Link:</label>
         <input type="url"
                class="form-control"
-               formControlName="videoLinks"
-               name="videoLinks"
-               id="videoLinks"
-               [ngClass]="{'is-valid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').valid,
-                      'is-invalid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid}">
+               formControlName="videoLink"
+               name="videoLink"
+               id="videoLink"
+               [ngClass]="{'is-valid': ideaForm.get('videoLink').touched && ideaForm.get('videoLink').valid,
+                      'is-invalid': ideaForm.get('videoLink').touched && ideaForm.get('videoLink').invalid}">
         <div class="invalid-feedback"
-             *ngIf="ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid">
+             *ngIf="ideaForm.get('videoLink').touched && ideaForm.get('videoLink').invalid">
           <span>{{formRequiredMessage.getFormInvalidMessage('video link')}}</span>
         </div>
       </div>
     </div>
-    <!--    <div class="form-row" *ngIf="videoLinks">
-          <div class="form-group col-sm-6" *ngFor="let videoLink of videoLinks; let i=index">
-            <label for="videoLink-{{i}}">Video Links:</label>
-            <input type="url"
-                   class="form-control"
-                   formControlName="videoLinks"
-                   [(ngModel)]="videoLink[i]"
-                   id="videoLink-{{i}}"
-                   [ngClass]="{'is-valid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').valid,
-                          'is-invalid': ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid}">
-            <div class="invalid-feedback"
-                 *ngIf="ideaForm.get('videoLinks').touched && ideaForm.get('videoLinks').invalid">
-              <span>{{formRequiredMessage.getFormInvalidMessage('video link')}}</span>
-            </div>
-            <a href="javascript:void(0);"
-               class="btn-circle-icon btn-info m-l-25"
-               ng-click="addVideoLink()"
-               tooltip="Add Video Link">
-              <i class="material-icons">add</i>
-            </a>
-          </div>
-        </div>-->
     <div class="form-row">
       <div class="form-group col-sm-6">
         <button type="submit" class="btn btn-primary" [disabled]="ideaForm.invalid">Add</button>
