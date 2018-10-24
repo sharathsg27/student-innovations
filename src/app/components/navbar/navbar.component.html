@@ -10,14 +10,14 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" *ngIf="isRegistrationComplete || !isLoggedIn">
+        <li class="nav-item" *ngIf="!isLoggedIn || (isLoggedIn && isRegistrationComplete)">
           <a class="nav-link" routerLink="/home" routerLinkActive="active">Home <span
             class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item d-none" *ngIf="isRegistrationComplete || !isLoggedIn">
+        <li class="nav-item" *ngIf="!isLoggedIn">
           <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
         </li>
-        <li class="nav-item" *ngIf="isRegistrationComplete || !isLoggedIn">
+        <li class="nav-item" *ngIf="isLoggedIn && isRegistrationComplete">
           <a class="nav-link" routerLink="/ideas" routerLinkActive="active">Ideas</a>
         </li>
       </ul>

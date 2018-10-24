@@ -50,6 +50,12 @@ export class UserRegisterComponent implements OnInit {
       if (loggedInUser) {
         this.isLoggedIn = true;
         this.user = loggedInUser;
+        let data = window.localStorage.getItem('registrationComplete');
+        if (data) {
+          this.appService.registrationCompleteStatus.next(true);
+        } else {
+          this.appService.registrationCompleteStatus.next(false);
+        }
       }
     });
     this.getSchoolTypeValues();
@@ -115,6 +121,7 @@ export class UserRegisterComponent implements OnInit {
       // @ts-ignore
       await this.appService.createRecord('/registration', form.value);
       this.appService.registrationCompleteStatus.next(true);
+      window.localStorage.setItem('registrationComplete', 'true');
       this.router.navigate(['/home']);
     } catch (e) {
       this.errorHandlerService.handleError(e);
