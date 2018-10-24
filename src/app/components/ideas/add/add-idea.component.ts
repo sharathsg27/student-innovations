@@ -16,7 +16,7 @@ import {ErrorHandlerService} from '../../../utils/error-handler/error-handler';
   styleUrls: ['./add-idea.component.css']
 })
 export class AddIdeaComponent implements OnInit {
-  ideaForm: FormGroup;
+  ideaForm;
   loggedInUserId;
   uploadedPhotos = [];
   formRequiredMessage = new MessageService();
