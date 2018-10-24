@@ -89,9 +89,6 @@ export class ViewIdeaComponent implements OnInit {
         if (data.photos) {
           this.photos = await this.getPhotos(data.photos);
           /*console.log(this.photos);*/
-        } else {
-          this.notificationService.showErrorMessage('Idea not found, Please try again');
-          /* this.router.navigate(['/ideas']);*/
         }
       } else {
         this.notificationService.showErrorMessage('Idea not found, Please try again');
