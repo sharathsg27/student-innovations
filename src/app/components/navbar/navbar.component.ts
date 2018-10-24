@@ -50,6 +50,7 @@ export class NavbarComponent implements OnInit {
         this.isLoggedIn = false;
         this.appService.loggedInStatus.next(this.isLoggedIn);
         this.loadingBarService.stop();
+        window.localStorage.removeItem('registrationComplete');
         this.notifService.showSuccessMessage('You have logged out successfully!', 'Logged Out');
         this.router.navigate(['/login']);
       })
