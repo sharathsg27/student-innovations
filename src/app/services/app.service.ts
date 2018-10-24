@@ -38,7 +38,7 @@ export class AppService {
   checkAuth() {
     return new Promise((resolve, reject) => {
       try {
-        return firebase.auth().onAuthStateChanged(function (user) {
+        return firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             resolve(user);
           }

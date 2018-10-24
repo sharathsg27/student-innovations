@@ -46,22 +46,19 @@ export class UserRegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkUser();
+    this.checkUser().then(loggedInUser => {
+      if (loggedInUser) {
+        this.isLoggedIn = true;
+        this.user = loggedInUser;
+      }
+    });
     this.getSchoolTypeValues();
     this.buildUserRegisterForm();
   }
 
   async checkUser() {
     try {
-      const user = await this.appService.checkAuth();
-      if (user) {
-        this.isLoggedIn = true;
-        this.user = user;
-      } else {
-        if (this.router.url !== '/registration') {
-          this.router.navigate(['/home']);
-        }
-      }
+      return await this.appService.checkAuth();
     } catch (e) {
       this.errorHandlerService.handleError(e);
     }
@@ -118,7 +115,7 @@ export class UserRegisterComponent implements OnInit {
       // @ts-ignore
       await this.appService.createRecord('/registration', form.value);
       this.appService.registrationCompleteStatus.next(true);
-      this.router.navigate(['/users']);
+      this.router.navigate(['/home']);
     } catch (e) {
       this.errorHandlerService.handleError(e);
     }

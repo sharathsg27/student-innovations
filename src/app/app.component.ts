@@ -10,20 +10,11 @@ import {BehaviorSubject, Observable} from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private appService: AppService,
-              private errorHandlerService: ErrorHandlerService) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.checkUser();
   }
 
-  async checkUser() {
-    try {
-      const user = await this.appService.checkAuth();
-    } catch (e) {
-      this.errorHandlerService.handleError(e);
-    }
-  }
 
 }

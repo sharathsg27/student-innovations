@@ -40,16 +40,17 @@ export class LoginComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.checkUser();
     this.setWindowRecaptcha();
+    this.checkUser().then(user => {
+      if (user) {
+        this.isLoggedIn = true;
+      }
+    });
   }
 
   async checkUser() {
     try {
-      const user = await this.appService.checkAuth();
-      if (user) {
-        this.isLoggedIn = true;
-      }
+      return await this.appService.checkAuth();
     } catch (e) {
       this.errorHandlerService.handleError(e);
     }

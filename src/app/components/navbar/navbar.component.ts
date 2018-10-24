@@ -21,23 +21,22 @@ export class NavbarComponent implements OnInit {
               private router: Router,
               private notifService: NotificationService,
               private loadingBarService: LoadingBarService,
-              private errorHandlerService: ErrorHandlerService,
-              private afAuth: AngularFireAuth) {
+              private errorHandlerService: ErrorHandlerService
+  ) {
     appService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     appService.isLoading$.subscribe(isLoading => this.isLoading = isLoading);
     appService.isRegistrationComplete$.subscribe(isRegistrationComplete => this.isRegistrationComplete = isRegistrationComplete);
   }
 
   ngOnInit() {
-    this.checkUser();
+    this.checkUser().then(user => {
+      if (user) this.isLoggedIn = true;
+    });
   }
 
   async checkUser() {
     try {
-      const user = await this.appService.checkAuth();
-      if (user) {
-        this.isLoggedIn = true;
-      }
+      return await this.appService.checkAuth();
     } catch (e) {
       this.errorHandlerService.handleError(e);
     }
@@ -47,7 +46,7 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.loadingBarService.start();
     this.appService.logOut()
-      .then((success) => {
+      .then(() => {
         this.isLoggedIn = false;
         this.appService.loggedInStatus.next(this.isLoggedIn);
         this.loadingBarService.stop();
