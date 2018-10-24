@@ -141,4 +141,17 @@ export class AppService {
       this.errorHandlerService.handleError(e);
     }
   }
+
+  convertDate(dateString) {
+    let dateVal = new Date(dateString);
+    let month_names = ['Jan', 'Feb', 'Mar',
+      'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep',
+      'Oct', 'Nov', 'Dec'];
+
+    let day = dateVal.getDate();
+    let month_index = dateVal.getMonth();
+    let year = dateVal.getFullYear();
+    return '' + day + '-' + month_names[month_index] + '-' + year;
+  }
 }
