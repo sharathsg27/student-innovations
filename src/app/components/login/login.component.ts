@@ -23,6 +23,7 @@ import {User} from 'firebase';
 export class LoginComponent implements AfterViewInit {
   windowRef: any;
   isLoggedIn = false;
+  loggedInUser;
   phoneSignInClass = new PhoneSignInClass();
   provider = new firebase.auth.GoogleAuthProvider();
   formRequiredMessage = new MessageService();
@@ -40,14 +41,16 @@ export class LoginComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.setWindowRecaptcha();
     this.checkUser().then(user => {
       if (user) {
         this.isLoggedIn = true;
+        this.router.navigate(['/registration']);
       }
     });
-    this.setWindowRecaptcha();
   }
 
+  // Check User credentials
   async checkUser() {
     try {
       return await this.appService.checkAuth();
@@ -56,6 +59,7 @@ export class LoginComponent implements AfterViewInit {
     }
   }
 
+  // Set Recaptcha verifier
   setWindowRecaptcha() {
     this.windowRef = this.window.windowRef;
     this.windowRef.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
@@ -98,7 +102,7 @@ export class LoginComponent implements AfterViewInit {
     }
   }*/
 
-  // Phone Number SignIn
+  // Send Mobile number verification code
   async sendVerificationCode(event) {
     event.preventDefault();
     const phoneNumber = this.phoneSignInClass.number;
@@ -118,7 +122,7 @@ export class LoginComponent implements AfterViewInit {
     }
   }
 
-  // Verify Code
+  // Verify sent mobile code
   async verifyCode(event, model) {
     event.preventDefault();
     try {
@@ -128,6 +132,7 @@ export class LoginComponent implements AfterViewInit {
           if (result) {
             this.appService.loadingStatus.next(false);
             this.appService.loggedInStatus.next(true);
+            this.loggedInUser = result.user;
             this.loadingBarService.stop();
             this.router.navigate(['/registration']);
             this.notificationService.showSuccessMessage('Phone verified successfully!', 'Mobile Verification');

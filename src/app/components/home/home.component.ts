@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {AppService} from '../../services/app.service';
-import {BehaviorSubject} from 'rxjs';
+import {Router} from '@angular/router';
 import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
 
 @Component({
@@ -10,21 +9,20 @@ import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
   constructor(private appService: AppService,
+              private router: Router,
               private errorHandlerService: ErrorHandlerService) {
   }
 
   ngOnInit() {
-    this.checkUser().then(loggedInUser => {
-      if (loggedInUser) {
-        let data = window.localStorage.getItem('registrationComplete');
-        if (data) {
-          this.appService.registrationCompleteStatus.next(true);
-        } else {
-          this.appService.registrationCompleteStatus.next(false);
-        }
+    /*this.checkUser().then(loggedInUser => {
+      // @ts-ignore
+      if (loggedInUser && loggedInUser.displayName === 'registered') {
+        this.appService.loggedInStatus.next(true);
+        this.appService.registrationCompleteStatus.next(true);
       }
-    });
+    });*/
   }
 
   async checkUser() {
@@ -34,6 +32,5 @@ export class HomeComponent implements OnInit {
       this.errorHandlerService.handleError(e);
     }
   }
-
 
 }

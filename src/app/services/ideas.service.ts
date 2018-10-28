@@ -16,7 +16,7 @@ export class IdeasService {
 
   }
 
-  /*list logged in user relavent ideas*/
+  // List logged in User relevant ideas
   async getAllRecord(api: string, filters) {
     try {
       return await this.db.database.ref(api)
@@ -34,25 +34,7 @@ export class IdeasService {
     }
   }
 
-  /*get a specific ideas*/
-  async getRecord(api: string, filters) {
-    try {
-      return await this.db.database.ref(api)
-        .orderByChild(filters['keyFilter'])
-        .equalTo(filters['valueFilter'])
-        .once('value')
-        .then(response => {
-          return response.val();
-        })
-        .catch((error: Error) => {
-          this.notificationService.showErrorMessage(error.message);
-        });
-    } catch (e) {
-      this.errorHandlerService.handleError(e);
-    }
-  }
-
-  /*create idea*/
+  // Create Idea record
   async createRecord(api: string, data: Object) {
     let newID = this.uuidService.generateUUID;
     data['_id'] = newID;

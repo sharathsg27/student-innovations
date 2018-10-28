@@ -60,7 +60,7 @@ export class ViewIdeaComponent implements OnInit {
       const user = await this.appService.checkAuth();
       if (user) {
         // @ts-ignore
-        this.loggedInUserId = user.uid;
+        this.loggedInUserId = user;
         this.getIdeaData();
       }
     } catch (e) {
@@ -74,7 +74,7 @@ export class ViewIdeaComponent implements OnInit {
         'keyFilter': '_id',
         'valueFilter': this.ideaId
       };
-      let data = await this.ideaService.getRecord('/ideas', filter);
+      let data = await this.appService.getRecord('/ideas', filter);
       if (data) {
         data = (Object.values(data))[0];
         this.ideaData.studentName = data.studentName;

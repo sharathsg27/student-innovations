@@ -6,6 +6,11 @@
   background-color: #e3f2fd;
 }
 
+.form-control:focus {
+  box-shadow: none !important;
+}
+
+
 .form-field-container {
   display: flex;
   flex-direction: column;

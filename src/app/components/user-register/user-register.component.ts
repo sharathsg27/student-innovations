@@ -10,9 +10,6 @@ import * as firebase from 'firebase';
 import {WindowService} from '../../utils/services/window/window.service';
 import {Router} from '@angular/router';
 import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
-import {LoadingBarService} from '@ngx-loading-bar/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from 'firebase';
 import {AppLoadingBarService} from '../../utils/loading-bar/loading-bar.service';
 
 @Component({
@@ -24,7 +21,7 @@ export class UserRegisterComponent implements OnInit {
   // Initializations
   user: Object;
   isLoggedIn: boolean;
-  isRegistrationComplete = false;
+  isRegistrationComplete: boolean;
   userRegisterForm: FormGroup;
   formRequiredMessage = new MessageService();
   schoolTypeValues: Array<SchoolTypeClass> = [];
@@ -41,21 +38,22 @@ export class UserRegisterComponent implements OnInit {
               private loadingBarService: AppLoadingBarService,
               private errorHandlerService: ErrorHandlerService) {
 
-    appService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    appService.isLoggedIn$.subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+    });
     appService.isRegistrationComplete$.subscribe(isRegistrationComplete => this.isRegistrationComplete = isRegistrationComplete);
   }
 
   ngOnInit() {
     this.checkUser().then(loggedInUser => {
       if (loggedInUser) {
-        this.isLoggedIn = true;
         this.user = loggedInUser;
-        let data = window.localStorage.getItem('registrationComplete');
-        if (data) {
+        this.appService.loggedInStatus.next(true);
+        // @ts-ignore
+        if (this.user.displayName === 'registered') {
           this.appService.registrationCompleteStatus.next(true);
-        } else {
-          this.appService.registrationCompleteStatus.next(false);
-        }
+          this.router.navigate(['/ideas']);
+        } else this.appService.registrationCompleteStatus.next(false);
       }
     });
     this.getSchoolTypeValues();
@@ -120,12 +118,24 @@ export class UserRegisterComponent implements OnInit {
       this.appService.loadingStatus.next(true);
       // @ts-ignore
       await this.appService.createRecord('/registration', form.value);
+      this.updateUserProfile();
       this.appService.registrationCompleteStatus.next(true);
-      window.localStorage.setItem('registrationComplete', 'true');
-      this.router.navigate(['/home']);
+      this.router.navigate(['/ideas']);
     } catch (e) {
       this.errorHandlerService.handleError(e);
     }
+  }
+
+  async updateUserProfile() {
+    let user = firebase.auth().currentUser;
+    await user.updateProfile({
+      displayName: 'registered',
+      photoURL: ''
+    }).then(function () {
+      // Update successful.
+    }, function (error) {
+      // An error happened.
+    });
   }
 
 }

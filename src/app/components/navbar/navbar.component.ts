@@ -13,6 +13,7 @@ import {BehaviorSubject} from 'rxjs';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  userId: string;
   isLoggedIn: boolean;
   isLoading: boolean;
   isRegistrationComplete: boolean;
@@ -29,19 +30,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkUser().then(user => {
-      if (user) this.isLoggedIn = true;
-    });
   }
-
-  async checkUser() {
-    try {
-      return await this.appService.checkAuth();
-    } catch (e) {
-      this.errorHandlerService.handleError(e);
-    }
-  }
-
 
   logout() {
     this.loadingBarService.start();
@@ -50,7 +39,6 @@ export class NavbarComponent implements OnInit {
         this.isLoggedIn = false;
         this.appService.loggedInStatus.next(this.isLoggedIn);
         this.loadingBarService.stop();
-        window.localStorage.removeItem('registrationComplete');
         this.notifService.showSuccessMessage('You have logged out successfully!', 'Logged Out');
         this.router.navigate(['/login']);
       })
