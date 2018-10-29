@@ -55,9 +55,9 @@ export class RegisteredUsersComponent implements OnInit {
   }
 
   async getRegisteredUsers() {
-    this.appService.loadingStatus.next(true);
+
     this.users$ = Object.values(await this.appService.getAllRecord('/registration'));
-    this.appService.loadingStatus.next(false);
+
   }
 
 }

@@ -13,7 +13,6 @@ import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {environment} from '../environments/environment';
 import {LoginComponent} from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ModalComponent} from './utils/modal/modal.component';
 import {SignUpComponent} from './components/sign-up/sign-up.component';
 import {LoadingBarHttpModule} from '@ngx-loading-bar/http';
 import {LoadingBarModule} from '@ngx-loading-bar/core';
@@ -29,6 +28,7 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {NgxLoadingModule} from 'ngx-loading';
 import {ViewIdeaComponent} from './components/ideas/view/view-idea.component';
 import {NgbCarouselConfig, NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgxSpinnerModule} from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,6 @@ import {NgbCarouselConfig, NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
     NavbarComponent,
     HomeComponent,
     LoginComponent,
-    ModalComponent,
     SignUpComponent,
     UserRegisterComponent,
     ListIdeasComponent,
@@ -61,7 +60,8 @@ import {NgbCarouselConfig, NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
     LoadingBarModule.forRoot(),
     ToastrModule.forRoot(),
     AngularFireStorageModule,
-    NgbCarouselModule
+    NgbCarouselModule,
+    NgxSpinnerModule
   ],
   providers: [UUID, NgbCarouselConfig],
   bootstrap: [AppComponent]

@@ -16,27 +16,39 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> | boolean {
     return this.appService.checkAuth().then(user => {
-      if (user) {
-        // @ts-ignore
-        this.appService.loggedInStatus.next(true);
-        // @ts-ignore
-        // Check if the user is registered, else query the registration table
-        if (user.displayName === 'registered') {
-          this.appService.registrationCompleteStatus.next(true);
-          return true;
-        } else {
+      if (this.router.url === '/home') {
+        console.log(this.router.url);
+        return true;
+      } else {
+        if (user) {
           // @ts-ignore
-          this.appService.checkUserHasRegistration(user.uid);
+          this.appService.loggedInStatus.next(true);
+          // @ts-ignore
+          // Check if the user is registered, else query the registration table
+          if (user.displayName === 'registered' && state.url === '/registration') {
+            this.appService.registrationCompleteStatus.next(true);
+            // @ts-ignore
+            this.appService.reDirectTo('ideas');
+            return false;
+            // @ts-ignore
+          } else if (user.displayName === 'registered' && state.url !== '/registration') {
+            this.appService.registrationCompleteStatus.next(true);
+            return true;
+          } else {
+            // @ts-ignore
+            this.appService.checkUserHasRegistration(user.uid);
+          }
+        } else {
+          this.router.navigate(['/login']);
           return false;
         }
-      } else {
-        this.router.navigate(['/login']);
-        return false;
       }
     })
       .catch(error => {
+        if (state.url !== '/home') {
         this.router.navigate(['/login']);
         return false;
+        } else return true;
       });
   }
 

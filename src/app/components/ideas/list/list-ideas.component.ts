@@ -3,6 +3,7 @@ import {IdeasService} from '../../../services/ideas.service';
 import {AppService} from '../../../services/app.service';
 import {ErrorHandlerService} from '../../../utils/error-handler/error-handler';
 import {Router} from '@angular/router';
+import {AppSpinnerService} from '../../../utils/spinner/app.spinner.service';
 
 
 @Component({
@@ -59,6 +60,7 @@ export class ListIdeasComponent implements OnInit {
   constructor(private ideasService: IdeasService,
               private errorHandlerService: ErrorHandlerService,
               private appService: AppService,
+              private spinnerService: AppSpinnerService,
               private router: Router) {
   }
 
@@ -81,7 +83,6 @@ export class ListIdeasComponent implements OnInit {
   }
 
   async getAllIdeas() {
-    this.appService.loadingStatus.next(true);
     let data = await this.ideasService.getAllRecord('/ideas', this.filters);
     if (data) {
       this.ideas$ = Object.values(data);
@@ -91,7 +92,6 @@ export class ListIdeasComponent implements OnInit {
         }
       }
     }
-    this.appService.loadingStatus.next(false);
   }
 
   onCustom(event) {

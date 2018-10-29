@@ -11,6 +11,7 @@ import {WindowService} from '../../utils/services/window/window.service';
 import {Router} from '@angular/router';
 import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
 import {AppLoadingBarService} from '../../utils/loading-bar/loading-bar.service';
+import {AppSpinnerService} from '../../utils/spinner/app.spinner.service';
 
 @Component({
   selector: 'app-user-register',
@@ -32,6 +33,7 @@ export class UserRegisterComponent implements OnInit {
               private db: AngularFireDatabase,
               private router: Router,
               private appService: AppService,
+              private spinnerService: AppSpinnerService,
               private window: WindowService,
               private notificationService: NotificationService,
               private messageService: MessageService,
@@ -115,7 +117,7 @@ export class UserRegisterComponent implements OnInit {
         // @ts-ignore
         form.value.userId = this.user.uid;
       }
-      this.appService.loadingStatus.next(true);
+
       // @ts-ignore
       await this.appService.createRecord('/registration', form.value);
       this.updateUserProfile();

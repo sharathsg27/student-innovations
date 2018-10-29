@@ -7,7 +7,7 @@ import * as firebase from 'firebase';
 import {environment} from '../../environments/environment';
 import {UserSignInClass} from '../classes/class';
 import UserCredential = firebase.auth.UserCredential;
-import {Router} from '@angular/router';
+import {Router, RouterStateSnapshot} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Subject} from 'rxjs';
 import {AppLoadingBarService} from '../utils/loading-bar/loading-bar.service';
@@ -191,12 +191,21 @@ export class AppService {
           return true;
         } else {
           this.registrationCompleteStatus.next(false);
-          this.router.navigate(['/registration']);
-          return false;
+          if (this.router.routerState.snapshot.url === 'home') {
+            return true;
+          } else {
+            this.router.navigate(['/registration']);
+            return false;
+          }
         }
       } catch (e) {
         this.errorHandlerService.handleError(e);
       }
     }
+  }
+
+  // Redirect to a state
+  reDirectTo(url: string) {
+    this.router.navigate([`/${url}`]);
   }
 }
