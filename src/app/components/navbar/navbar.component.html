@@ -1,5 +1,5 @@
 <div class="container-fluid p-0">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-navbar">
+  <nav class="navbar position-sticky navbar-expand-lg navbar-dark bg-danger">
     <ngx-loading-bar [color]="'rgba(248, 249, 250, 0.5)'" [includeSpinner]="false" [height]="'55px'"
                      [diameter]="0"></ngx-loading-bar>
     <a class="navbar-brand text-white">ST - Innovations</a>
@@ -11,18 +11,22 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" *ngIf="!isLoggedIn || (isLoggedIn && isRegistrationComplete)">
-          <a class="nav-link" routerLink="/home" routerLinkActive="active">Home <span
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">
+            <i class="material-icons">home</i>Home
+            <span
             class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn && isRegistrationComplete">
-          <a class="nav-link" routerLink="/ideas" routerLinkActive="active">Ideas</a>
+          <a class="nav-link" routerLink="/ideas" routerLinkActive="active">
+            <i class="material-icons">wb_sunny</i>Ideas</a>
         </li>
       </ul>
-      <button class="btn btn-outline-light btn-primary my-2 my-sm-0" type="button" routerLink="/login"
+      <button class="btn btn-outline-warning btn-warning my-2 my-sm-0" type="button" routerLink="/login"
               *ngIf="!isLoggedIn">Login
       </button>
       <button class="btn btn btn-outline-light btn btn-primary my-2 my-sm-0" type="button" *ngIf="isLoggedIn"
               (click)="logout()">Logout
+        <span><i class="material-icons ml-2 align-bottom">exit_to_app</i></span>
       </button>
     </div>
   </nav>

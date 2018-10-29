@@ -2,6 +2,10 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import '~ngx-toastr/toastr.css';
 
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .navbar-bg {
   background-color: #e3f2fd;
 }
@@ -18,4 +22,43 @@
 
 .form-field-container > * {
   width: 100%;
+}
+
+.card, .card-header, .card-body {
+  border: transparent !important;
+}
+
+.card-body {
+  margin: 0 20px;
+}
+
+.card-body input {
+  padding: 0 40px 0 15px;
+}
+
+.card-header {
+  text-align: center;
+}
+
+.card-header span {
+  vertical-align: sub;
+}
+
+.form-wrapper {
+  position: absolute;
+  left: 50%;
+  margin-top: -100px; /* Half of height */
+  margin-left: -150px;
+}
+
+.block-button {
+  display: block;
+  width: 100%;
+  border-radius: 30px;
+  padding: 10px 0;
+  font-size: 16px;
+}
+
+.block-button span i {
+  vertical-align: sub !important;
 }

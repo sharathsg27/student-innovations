@@ -1,42 +1,44 @@
 <div class="container">
-  <div class="d-flex justify-content-center mt-5">
+  <div class="mt-5 form-wrapper">
     <form>
-      <!--<div class="form-group d-none">
-        <label for="emailId">Email</label>
-        <input type="text" class="form-control" [(ngModel)]="newUserSignIn.email" name="emailId" id="emailId" required/>
-      </div>
-      <div class="form-group d-none">
-        <label for="userPassword">Password</label>
-        <input type="password" class="form-control" [(ngModel)]="newUserSignIn.password" name="userPassword"
-               id="userPassword" required/>
-      </div>
-      <button type="submit" class="btn btn-danger btn-lg d-none" (click)="emailSignIn()">Login</button>-->
-      <h2>Login</h2>
-      <hr>
-      <div class="form-group mt-3" *ngIf="!verificationCodeSent">
-        <label for="mobile"><span><i
-          class="material-icons mr-2 align-text-bottom">phone_android</i>Mobile</span></label>
-        <input type="text" class="form-control" [ngClass]="{'mb-0': mobile.invalid }" name="mobile" id="mobile"
-               [(ngModel)]="phoneSignInClass.number" #mobile="ngModel"
-               placeholder="(+91)-92******43" [minlength]="13" [maxlength]="13" required autofocus/>
-        <div class="invalid-text" *ngIf="mobile.touched && mobile.invalid">
-          {{formRequiredMessage.getFormRequiredMessage('A valid Mobile No.')}}
+      <div class="card">
+        <div class="card-header">
+          <h4>
+            <span><i class="material-icons mr-2">lock</i>Login</span>
+          </h4>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg g-recaptcha mt-3" id="recaptcha-container"
-                [ngClass]="{'disabled': !mobile.valid}"
-                [attr.data-sitekey]="siteToken"
-                (click)="mobile.valid && sendVerificationCode($event)">Send Verification Code
-        </button>
+        <div class="card-body">
+          <div class="form-group mt-3" *ngIf="!verificationCodeSent">
+            <label for="mobile"><span><i
+              class="material-icons mr-2 align-text-bottom">phone_android</i>Mobile</span></label>
+            <input type="text" class="form-control" [ngClass]="{'mb-0': mobile.invalid, 'is-valid': mobile.valid }"
+                   name="mobile" id="mobile"
+                   [(ngModel)]="phoneSignInClass.number" #mobile="ngModel"
+                   placeholder="(+91)-92******43" [minlength]="13" [maxlength]="13" required autofocus/>
+            <div class="invalid-text" *ngIf="mobile.touched && mobile.invalid">
+              {{formRequiredMessage.getFormRequiredMessage('A valid Mobile No.')}}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block g-recaptcha mt-3 block-button"
+                    id="recaptcha-container"
+                    [ngClass]="{'disabled': !mobile.valid}"
+                    [attr.data-sitekey]="siteToken"
+                    (click)="mobile.valid && sendVerificationCode($event)">
+              <span>Verification Code</span>
+              <span><i class="material-icons ml-2">send</i></span>
+            </button>
+          </div>
+          <div class="form-group" *ngIf="verificationCodeSent">
+            <input type="text" class="form-control mb-3" name="emailLink" id="verifyCode" ngModel
+                   #verificationCode="ngModel"
+                   placeholder="Code" required autofocus/>
+            <button type="submit" class="btn btn-success btn-lg block-button"
+                    (click)="verifyCode($event, verificationCode)">
+              <span>Verify Code</span>
+              <span><i class="material-icons ml-2">done</i></span>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="form-group" *ngIf="verificationCodeSent">
-        <input type="text" class="form-control mb-3" name="emailLink" id="verifyCode" ngModel
-               #verificationCode="ngModel"
-               placeholder="Code" required autofocus/>
-
-        <button type="submit" class="btn btn-success btn-lg" (click)="verifyCode($event, verificationCode)">Verify Code
-        </button>
-      </div>
-
     </form>
   </div>
 </div>
