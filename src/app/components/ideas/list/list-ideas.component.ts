@@ -52,6 +52,7 @@ export class ListIdeasComponent implements OnInit {
   }
 
   async getAllIdeas() {
+    this.spinnerService.showSpinner();
     let data = await this.ideasService.getAllRecord('/ideas', this.filters);
     if (data) {
       this.ideas$ = [...Object.values(data)];
@@ -62,6 +63,7 @@ export class ListIdeasComponent implements OnInit {
       }
       this.rows = this.ideas$;
     }
+    this.spinnerService.hideSpinner();
   }
 
   onCustom({selected}) {
