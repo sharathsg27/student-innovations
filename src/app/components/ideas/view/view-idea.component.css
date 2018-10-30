@@ -3,3 +3,13 @@
   position: relative;
   border: 1px solid black;
 }
+
+.bg {
+  background-image: url("../../../../assets/images/add-idea-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  -moz-background-size: cover;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
