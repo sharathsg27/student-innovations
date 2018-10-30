@@ -1,7 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {HomeComponent} from './components/home/home.component';
 import {AppRoutingModule} from './app.routing.module';
@@ -29,6 +29,7 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {NgxLoadingModule} from 'ngx-loading';
 import {ViewIdeaComponent} from './components/ideas/view/view-idea.component';
 import {NgbCarouselConfig, NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {NgbCarouselConfig, NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
     LoadingBarModule.forRoot(),
     ToastrModule.forRoot(),
     AngularFireStorageModule,
-    NgbCarouselModule
+    NgbCarouselModule,
+    NgxDatatableModule
   ],
   providers: [UUID, NgbCarouselConfig],
   bootstrap: [AppComponent]

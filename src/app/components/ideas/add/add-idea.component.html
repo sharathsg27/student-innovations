@@ -1,122 +1,140 @@
-<section class="container col-sm-6">
-  <form [formGroup]="ideaForm" (ngSubmit)="addIdea(ideaForm)">
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <label for="studentName">Student Name:</label>
-        <input type="text"
-               class="form-control"
-               formControlName="studentName"
-               id="studentName"
-               autocomplete="off"
-               name="studentName"
-               required
-               [ngClass]="{'is-valid': ideaForm.get('studentName').touched && ideaForm.get('studentName').valid,
-                      'is-invalid': ideaForm.get('studentName').touched && ideaForm.get('studentName').invalid}">
-        <div class="invalid-feedback"
-             *ngIf="ideaForm.get('studentName').touched && ideaForm.get('studentName').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('Student name')}}</span>
-        </div>
+<section class="col-lg-12 bg">
+  <div class="container col-sm-6">
+    <div class="form-background">
+      <div class="card-header">
+        <h3 align="center">Add Idea</h3>
       </div>
-      <div class="form-group col-sm-6">
-        <label for="studentClass">Class:</label>
-        <input type="number"
-               class="form-control"
-               formControlName="studentClass"
-               id="studentClass"
-               name="studentClass"
-               min="1"
-               max="10"
-               [ngClass]="{'is-valid': ideaForm.get('studentClass').touched && ideaForm.get('studentClass').valid,
-                      'is-invalid': ideaForm.get('studentClass').touched && ideaForm.get('studentClass').invalid}"
-               required>
-        <div class="invalid-feedback"
-             *ngIf="ideaForm.get('studentClass').touched && ideaForm.get('studentClass').invalid">
-          <span>{{formRequiredMessage.getFormInvalidMessage('student class')}}</span>
-        </div>
+      <div class="card-body">
+        <form [formGroup]="ideaForm" (ngSubmit)="addIdea(ideaForm)">
+          <div class="form-row">
+            <div class="form-group col-sm-6">
+              <label for="studentName">Student Name</label>
+              <input type="text"
+                     class="form-control"
+                     formControlName="studentName"
+                     id="studentName"
+                     autocomplete="off"
+                     name="studentName"
+                     required
+                     [ngClass]="{'is-valid': ideaForm.get('studentName').touched && ideaForm.get('studentName').valid,
+                            'is-invalid': ideaForm.get('studentName').touched && ideaForm.get('studentName').invalid}">
+              <div class="invalid-feedback"
+                   *ngIf="ideaForm.get('studentName').touched && ideaForm.get('studentName').invalid">
+                <span>{{formRequiredMessage.getFormRequiredMessage('Student name')}}</span>
+              </div>
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="studentClass">Class</label>
+              <input type="number"
+                     class="form-control"
+                     formControlName="studentClass"
+                     id="studentClass"
+                     name="studentClass"
+                     min="1"
+                     max="10"
+                     [ngClass]="{'is-valid': ideaForm.get('studentClass').touched && ideaForm.get('studentClass').valid,
+                            'is-invalid': ideaForm.get('studentClass').touched && ideaForm.get('studentClass').invalid}"
+                     required>
+              <div class="invalid-feedback"
+                   *ngIf="ideaForm.get('studentClass').touched && ideaForm.get('studentClass').invalid">
+                <span>{{formRequiredMessage.getFormInvalidMessage('student class')}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6">
+              <label for="studentSection">Section</label>
+              <input type="text"
+                     class="form-control"
+                     id="studentSection"
+                     formControlName="studentSection"
+                     name="studentSection">
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="studentRollNumber">Roll Number</label>
+              <input type="text"
+                     formControlName="studentRollNumber"
+                     class="form-control"
+                     id="studentRollNumber"
+                     autocomplete="off"
+                     name="studentRollNumber"
+                     required
+                     [ngClass]="{'is-valid': ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').valid,
+                            'is-invalid': ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').invalid}">
+              <div class="invalid-feedback"
+                   *ngIf="ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').invalid">
+                <span>{{formRequiredMessage.getFormRequiredMessage('Student roll number')}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-12">
+              <label for="idea">Idea:</label>
+              <textarea class="form-control"
+                        id="idea"
+                        rows="10"
+                        name="idea"
+                        formControlName="idea"
+                        required
+                        [ngClass]="{'is-valid': ideaForm.get('idea').touched && ideaForm.get('idea').valid,
+                            'is-invalid': ideaForm.get('idea').touched && ideaForm.get('idea').invalid}"></textarea>
+              <div class="invalid-feedback" *ngIf="ideaForm.get('idea').touched && ideaForm.get('idea').invalid">
+                <span>{{formRequiredMessage.getFormRequiredMessage('Idea')}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6">
+              <label for="photos">Upload Photos</label>
+              <div class="clear"></div>
+              <div class="upload-icon-container">
+                <div class="icon-item-inner-container">
+                  <div class="icon-container">
+                    <i class="material-icons icon-image-preview">cloud_upload</i>
+                    <input type="file"
+                           id="photos"
+                           class="upload-btn"
+                           multiple
+                           (change)="uploadFile($event)"
+                           name="photos"
+                           accept=".png,.jpg">
+                  </div>
+                </div>
+              </div>
+              <progress max="100" [value]="(uploadProgress | async)"></progress>
+            </div>
+            <div *ngIf="uploadedPhotos.length" class="form-group col-sm-6">
+              <p>Uploaded Photos</p>
+              <ul class="list-group">
+                <li *ngFor="let eachPhoto of uploadedPhotos" class="list-group-item">
+                  <span>{{ eachPhoto["name"] }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6">
+              <label for="videoLink">Video Link</label>
+              <input type="url"
+                     class="form-control"
+                     formControlName="videoLink"
+                     name="videoLink"
+                     id="videoLink"
+                     [ngClass]="{'is-valid': ideaForm.get('videoLink').touched && ideaForm.get('videoLink').valid,
+                            'is-invalid': ideaForm.get('videoLink').touched && ideaForm.get('videoLink').invalid}">
+              <div class="invalid-feedback"
+                   *ngIf="ideaForm.get('videoLink').touched && ideaForm.get('videoLink').invalid">
+                <span>{{formRequiredMessage.getFormInvalidMessage('video link')}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-6">
+              <button type="submit" class="submit-btn" [disabled]="ideaForm.invalid">Add Idea</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <label for="studentSection">Section:</label>
-        <input type="text"
-               class="form-control"
-               id="studentSection"
-               formControlName="studentSection"
-               name="studentSection">
-      </div>
-      <div class="form-group col-sm-6">
-        <label for="studentRollNumber">Roll Number:</label>
-        <input type="text"
-               formControlName="studentRollNumber"
-               class="form-control"
-               id="studentRollNumber"
-               autocomplete="off"
-               name="studentRollNumber"
-               required
-               [ngClass]="{'is-valid': ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').valid,
-                      'is-invalid': ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').invalid}">
-        <div class="invalid-feedback"
-             *ngIf="ideaForm.get('studentRollNumber').touched && ideaForm.get('studentRollNumber').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('Student roll number')}}</span>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-sm-12">
-        <label for="idea">Idea:</label>
-        <textarea class="form-control"
-                  id="idea"
-                  rows="15"
-                  name="idea"
-                  formControlName="idea"
-                  required
-                  [ngClass]="{'is-valid': ideaForm.get('idea').touched && ideaForm.get('idea').valid,
-                      'is-invalid': ideaForm.get('idea').touched && ideaForm.get('idea').invalid}"></textarea>
-        <div class="invalid-feedback" *ngIf="ideaForm.get('idea').touched && ideaForm.get('idea').invalid">
-          <span>{{formRequiredMessage.getFormRequiredMessage('Idea')}}</span>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <label for="photos">Photos:</label>
-        <input type="file"
-               id="photos"
-               multiple
-               (change)="uploadFile($event)"
-               name="photos"
-               accept=".png,.jpg">
-        <progress max="100" [value]="(uploadProgress | async)"></progress>
-      </div>
-      <div *ngIf="uploadedPhotos.length">
-        <p>uploaded Photos</p>
-        <ul class="list-group">
-          <li *ngFor="let eachPhoto of uploadedPhotos" class="list-group-item">
-            <span>{{ eachPhoto["name"] }}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <label for="videoLink">Video Link:</label>
-        <input type="url"
-               class="form-control"
-               formControlName="videoLink"
-               name="videoLink"
-               id="videoLink"
-               [ngClass]="{'is-valid': ideaForm.get('videoLink').touched && ideaForm.get('videoLink').valid,
-                      'is-invalid': ideaForm.get('videoLink').touched && ideaForm.get('videoLink').invalid}">
-        <div class="invalid-feedback"
-             *ngIf="ideaForm.get('videoLink').touched && ideaForm.get('videoLink').invalid">
-          <span>{{formRequiredMessage.getFormInvalidMessage('video link')}}</span>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <button type="submit" class="btn btn-primary" [disabled]="ideaForm.invalid">Add</button>
-      </div>
-    </div>
-  </form>
+  </div>
 </section>
