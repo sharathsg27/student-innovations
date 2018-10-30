@@ -19,7 +19,6 @@ export class ListIdeasComponent implements OnInit {
   loggedInUserId;
   selected = [];
   rows = [];
-  SelectedIdeaId;
   filters = {
     keyFilter: 'userId',
     valueFilter: this.loggedInUserId
@@ -66,14 +65,9 @@ export class ListIdeasComponent implements OnInit {
     this.spinnerService.hideSpinner();
   }
 
-  onCustom({selected}) {
-    this.SelectedIdeaId = selected[0]['_id'];
-  }
 
-  goToPage() {
-    if (this.SelectedIdeaId) {
-      this.router.navigate([`/view-idea/${this.SelectedIdeaId}`]);
-    }
+  goToPage(value) {
+    this.router.navigate([`/view-idea/${value}`]);
   }
 
   updateFilter(event) {

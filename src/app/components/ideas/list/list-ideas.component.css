@@ -41,3 +41,7 @@ section.page-action-panel .page-action-buttons button {
   margin-top: 6px;
   font-weight: 600;
 }
+
+.pointer {
+  cursor: pointer !important;
+}
