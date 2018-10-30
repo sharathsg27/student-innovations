@@ -9,12 +9,6 @@
   -moz-background-size: cover;
 }
 
-@media only screen and (max-width: 400px) {
-  .container {
-    background: url("../../../assets/images/sketch-table-bg.jpeg") no-repeat;
-  }
-}
-
 .card-header span i {
   vertical-align: text-top;
 }
