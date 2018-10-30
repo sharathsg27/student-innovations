@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {IdeasService} from '../../../services/ideas.service';
 import {AppService} from '../../../services/app.service';
 import {ErrorHandlerService} from '../../../utils/error-handler/error-handler';
 import {Router} from '@angular/router';
+import {DatatableComponent} from '@swimlane/ngx-datatable';
 
 
 @Component({
@@ -15,47 +16,15 @@ export class ListIdeasComponent implements OnInit {
   loading: boolean;
   ideas$: any[];
   loggedInUserId;
-  settings = {
-    columns: {
-      studentName: {
-        title: 'Student Name',
-      },
-      studentClass: {
-        title: 'Class'
-      },
-      studentRollNumber: {
-        title: 'Roll Number'
-      },
-      submittedDate: {
-        title: 'Idea Submitted Date'
-      }
-    },
-    actions: {
-      add: false,
-      edit: false,
-      delete: false ,
-      custom: [
-        {
-          name: '',
-          title: '<span title="View Idea"><i class="material-icons">visibility</i></span>'
-        }
-      ],
-      position: 'right'
-    },
-    pager: {
-      perPage: 20
-    },
-    noDataMessage: 'No Idea records found',
-    attr: {
-      class: 'table'
-    }
-  };
+  selected = [];
+  rows = [];
+  SelectedIdeaId;
   filters = {
     keyFilter: 'userId',
     valueFilter: this.loggedInUserId
   };
 
-
+  @ViewChild(DatatableComponent) table: DatatableComponent;
   constructor(private ideasService: IdeasService,
               private errorHandlerService: ErrorHandlerService,
               private appService: AppService,
@@ -84,21 +53,40 @@ export class ListIdeasComponent implements OnInit {
     this.appService.loadingStatus.next(true);
     let data = await this.ideasService.getAllRecord('/ideas', this.filters);
     if (data) {
-      this.ideas$ = Object.values(data);
+      this.ideas$ = [...Object.values(data)];
       for (let i = 0; i < this.ideas$.length; i++) {
         if (this.ideas$[i].submittedDate) {
           this.ideas$[i].submittedDate = this.appService.convertDate(this.ideas$[i].submittedDate);
         }
       }
+      this.rows = this.ideas$;
     }
     this.appService.loadingStatus.next(false);
   }
 
-  onCustom(event) {
-    let ideaId = event.data._id;
-    this.router.navigate([`/view-idea/${ideaId}`]);
+  onCustom({selected}) {
+    this.SelectedIdeaId = selected[0]['_id'];
   }
 
+  goToPage() {
+    if (this.SelectedIdeaId) {
+      this.router.navigate([`/view-idea/${this.SelectedIdeaId}`]);
+    }
+  }
+
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    // filter our data
+    const temp = this.ideas$.filter(function (idea) {
+      return idea.studentName.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+
+    // update the rows
+    this.rows = temp;
+    // Whenever the filter changes, always go back to the first page
+    this.table.offset = 0;
+  }
 
 
 }

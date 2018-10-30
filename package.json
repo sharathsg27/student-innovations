@@ -24,6 +24,7 @@
     "@ng-bootstrap/ng-bootstrap": "^3.2.2",
     "@ngx-loading-bar/core": "^2.2.0",
     "@ngx-loading-bar/http": "^2.2.0",
+    "@swimlane/ngx-datatable": "^13.1.0",
     "@types/googlemaps": "^3.30.14",
     "angular2-uuid": "^1.1.1",
     "angularfire2": "^5.0.2",
