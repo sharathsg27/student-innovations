@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {UUIDService} from '../utils/services/UUID/uuid.service';
+import {UUIDService} from '../utils/UUID/uuid.service';
 import {NotificationService} from '../utils/notifications/notification.service';
 import {ErrorHandlerService} from '../utils/error-handler/error-handler';
 import {AppSpinnerService} from '../utils/spinner/app.spinner.service';

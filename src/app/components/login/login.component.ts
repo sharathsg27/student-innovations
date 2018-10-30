@@ -1,18 +1,14 @@
-import {Component, OnInit, HostBinding, AfterContentInit, ElementRef, AfterViewInit, EventEmitter, Output} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
-import {AngularFireAuth,} from 'angularfire2/auth';
+import {Component, ElementRef, AfterViewInit} from '@angular/core';
 import * as firebase from 'firebase/app';
 import {Router} from '@angular/router';
-import {UserSignInClass, PhoneSignInClass} from '../../classes/class';
-import {WindowService} from '../../utils/services/window/window.service';
+import {PhoneSignInClass} from '../../classes/class';
+import {WindowService} from '../../utils/window/window.service';
 import {environment} from '../../../environments/environment';
 import {MessageService} from '../../utils/messages/message.service';
 import {NotificationService} from '../../utils/notifications/notification.service';
 import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
 import {AppService} from '../../services/app.service';
 import {LoadingBarService} from '@ngx-loading-bar/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from 'firebase';
 import {AppSpinnerService} from '../../utils/spinner/app.spinner.service';
 
 
@@ -119,8 +115,8 @@ export class LoginComponent implements AfterViewInit {
         ('Please enter the Verification code sent to your Mobile', 'Mobile Login');
       }
     } catch (e) {
+      this.spinnerService.hideSpinner();
       this.errorHandlerService.handleError(e);
-
     }
   }
 
@@ -128,23 +124,24 @@ export class LoginComponent implements AfterViewInit {
   async verifyCode(event, model) {
     event.preventDefault();
     try {
+      this.spinnerService.showSpinner();
       await this.windowRef.confirmationResult.confirm(model.value)
         .then(result => {
           if (result) {
-
             this.appService.loggedInStatus.next(true);
             this.loggedInUser = result.user;
             this.loadingBarService.stop();
             this.router.navigate(['/registration']);
             this.notificationService.showSuccessMessage('Phone verified successfully!', 'Mobile Verification');
+            this.spinnerService.hideSpinner();
           }
         }).catch(e => {
+          this.spinnerService.hideSpinner();
           this.errorHandlerService.handleError(e);
-
         });
     } catch (e) {
       this.errorHandlerService.handleError(e);
-
+      this.spinnerService.hideSpinner();
     }
 
   }

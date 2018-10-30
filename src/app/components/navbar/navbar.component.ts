@@ -24,10 +24,7 @@ export class NavbarComponent implements OnInit {
               private errorHandlerService: ErrorHandlerService
   ) {
     appService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
-    appService.isLoading$.subscribe(isLoading => {
-      this.isLoading = isLoading;
-      console.log(isLoading);
-    });
+    appService.isLoading$.subscribe(isLoading => this.isLoading = isLoading);
     appService.isRegistrationComplete$.subscribe(isRegistrationComplete => this.isRegistrationComplete = isRegistrationComplete);
   }
 

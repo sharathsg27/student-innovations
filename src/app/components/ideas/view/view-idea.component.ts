@@ -88,7 +88,6 @@ export class ViewIdeaComponent implements OnInit {
         this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.videoLink);
         if (data.photos) {
           this.photos = await this.getPhotos(data.photos);
-          /*console.log(this.photos);*/
         }
       } else {
         this.notificationService.showErrorMessage('Idea not found, Please try again');

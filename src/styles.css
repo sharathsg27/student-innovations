@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
-@import '~ngx-toastr/toastr.css';
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -61,4 +60,5 @@ body {
 
 .block-button span i {
   vertical-align: sub !important;
+  font-size: 20px !important;
 }

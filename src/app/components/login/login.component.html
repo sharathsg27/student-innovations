@@ -9,8 +9,7 @@
         </div>
         <div class="card-body">
           <div class="form-group mt-3" *ngIf="!verificationCodeSent">
-            <label for="mobile"><span><i
-              class="material-icons mr-2 align-text-bottom">phone_android</i>Mobile</span></label>
+            <label for="mobile" class="text-secondary"><span><i class="material-icons mr-2 align-text-bottom">phone_android</i>Mobile</span></label>
             <input type="text" class="form-control" [ngClass]="{'mb-0': mobile.invalid, 'is-valid': mobile.valid }"
                    name="mobile" id="mobile"
                    [(ngModel)]="phoneSignInClass.number" #mobile="ngModel"
@@ -28,9 +27,15 @@
             </button>
           </div>
           <div class="form-group" *ngIf="verificationCodeSent">
-            <input type="text" class="form-control mb-3" name="emailLink" id="verifyCode" ngModel
+            <label class="text-secondary"><i class="material-icons mr-2 align-bottom">code</i>Verification Code</label>
+            <input type="text" class="form-control" name="emailLink" id="verifyCode" ngModel
                    #verificationCode="ngModel"
                    placeholder="Code" required autofocus/>
+            <div class="mb-3">
+              <em>
+                <small class="text text-warning">Enter 6-digit verification code sent to your Mobile.</small>
+              </em>
+            </div>
             <button type="submit" class="btn btn-success btn-lg block-button"
                     (click)="verifyCode($event, verificationCode)">
               <span>Verify Code</span>

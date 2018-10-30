@@ -17,7 +17,6 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Promise<boolean> | boolean {
     return this.appService.checkAuth().then(user => {
       if (this.router.url === '/home') {
-        console.log(this.router.url);
         return true;
       } else {
         if (user) {

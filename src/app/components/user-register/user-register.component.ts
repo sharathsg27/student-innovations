@@ -7,7 +7,7 @@ import {NotificationService} from '../../utils/notifications/notification.servic
 import {MessageService} from '../../utils/messages/message.service';
 import {environment} from '../../../environments/environment';
 import * as firebase from 'firebase';
-import {WindowService} from '../../utils/services/window/window.service';
+import {WindowService} from '../../utils/window/window.service';
 import {Router} from '@angular/router';
 import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
 import {AppLoadingBarService} from '../../utils/loading-bar/loading-bar.service';
