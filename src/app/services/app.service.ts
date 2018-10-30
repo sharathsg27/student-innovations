@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {UUIDService} from '../utils/services/UUID/uuid.service';
+import {UUIDService} from '../utils/UUID/uuid.service';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {ErrorHandlerService} from '../utils/error-handler/error-handler';
 import {NotificationService} from '../utils/notifications/notification.service';
@@ -7,10 +7,11 @@ import * as firebase from 'firebase';
 import {environment} from '../../environments/environment';
 import {UserSignInClass} from '../classes/class';
 import UserCredential = firebase.auth.UserCredential;
-import {Router} from '@angular/router';
+import {Router, RouterStateSnapshot} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Subject} from 'rxjs';
 import {AppLoadingBarService} from '../utils/loading-bar/loading-bar.service';
+import {promise} from 'selenium-webdriver';
 
 @Injectable({
   providedIn: 'root'
@@ -35,13 +36,13 @@ export class AppService {
               private db: AngularFireDatabase) {
   }
 
-  checkAuth() {
-    return new Promise((resolve, reject) => {
+  async checkAuth() {
+    return await new Promise((resolve, reject) => {
       try {
         return firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             resolve(user);
-          }
+          } else reject(false);
         });
       } catch (e) {
         reject(e);
@@ -142,6 +143,24 @@ export class AppService {
     }
   }
 
+  // Get a particular record with filter (Key, Value)
+  async getRecord(api: string, filters) {
+    try {
+      return await this.db.database.ref(api)
+        .orderByChild(filters['keyFilter'])
+        .equalTo(filters['valueFilter'])
+        .once('value')
+        .then(response => {
+          return response.val();
+        })
+        .catch((error: Error) => {
+          this.notificationService.showErrorMessage(error.message);
+        });
+    } catch (e) {
+      this.errorHandlerService.handleError(e);
+    }
+  }
+
   convertDate(dateString) {
     let dateVal = new Date(dateString);
     let month_names = ['Jan', 'Feb', 'Mar',
@@ -153,5 +172,40 @@ export class AppService {
     let month_index = dateVal.getMonth();
     let year = dateVal.getFullYear();
     return '' + day + '-' + month_names[month_index] + '-' + year;
+  }
+
+  // Check User has done a registration
+  async checkUserHasRegistration(userId: string) {
+    if (userId) {
+      let filter = {
+        'keyFilter': 'userId',
+        // @ts-ignore
+        'valueFilter': userId
+      };
+      try {
+        let records = await this.getRecord('/registration', filter);
+        this.loadingStatus.next(false);
+        if (records) {
+          this.registrationCompleteStatus.next(true);
+          this.router.navigate(['/ideas']);
+          return true;
+        } else {
+          this.registrationCompleteStatus.next(false);
+          if (this.router.routerState.snapshot.url === 'home') {
+            return true;
+          } else {
+            this.router.navigate(['/registration']);
+            return false;
+          }
+        }
+      } catch (e) {
+        this.errorHandlerService.handleError(e);
+      }
+    }
+  }
+
+  // Redirect to a state
+  reDirectTo(url: string) {
+    this.router.navigate([`/${url}`]);
   }
 }

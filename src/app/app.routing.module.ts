@@ -7,16 +7,17 @@ import {RegisteredUsersComponent} from './components/registered-users/registered
 import {ListIdeasComponent} from './components/ideas/list/list-ideas.component';
 import {AddIdeaComponent} from './components/ideas/add/add-idea.component';
 import {ViewIdeaComponent} from './components/ideas/view/view-idea.component';
+import {AuthGuard} from './services/app.authguard.service';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent},
+  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
-  {path: 'users', component: RegisteredUsersComponent},
+  {path: 'users', component: RegisteredUsersComponent, canActivate: [AuthGuard]},
   {path: 'registration', component: UserRegisterComponent},
-  {path: 'ideas', component: ListIdeasComponent},
-  {path: 'add-idea', component: AddIdeaComponent},
-  {path: 'view-idea/:id', component: ViewIdeaComponent}
+  {path: 'ideas', component: ListIdeasComponent, canActivate: [AuthGuard]},
+  {path: 'add-idea', component: AddIdeaComponent, canActivate: [AuthGuard]},
+  {path: 'view-idea/:id', component: ViewIdeaComponent, canActivate: [AuthGuard]}
 ];
 
 
@@ -26,5 +27,4 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule {
-
 }

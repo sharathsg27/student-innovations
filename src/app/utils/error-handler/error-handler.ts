@@ -13,6 +13,7 @@ export class ErrorHandlerService implements ErrorHandler {
   notificationService = this.injector.get(NotificationService);
 
   constructor(private injector: Injector,
+              private notifService: NotificationService,
               private router: Router) {
   }
 
@@ -28,8 +29,8 @@ export class ErrorHandlerService implements ErrorHandler {
       }
     } else {
       // Handle Client Error (Angular Error, ReferenceError...)
+      if (error && error.message) this.notifService.showErrorMessage(error.message);
       this.router.navigate(['/login']);
-      return this.notificationService.showErrorMessage(`${error.message}`);
     }
   }
 }

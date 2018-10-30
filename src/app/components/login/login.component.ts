@@ -1,18 +1,15 @@
-import {Component, OnInit, HostBinding, AfterContentInit, ElementRef, AfterViewInit, EventEmitter, Output} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
-import {AngularFireAuth,} from 'angularfire2/auth';
+import {Component, ElementRef, AfterViewInit} from '@angular/core';
 import * as firebase from 'firebase/app';
 import {Router} from '@angular/router';
-import {UserSignInClass, PhoneSignInClass} from '../../classes/class';
-import {WindowService} from '../../utils/services/window/window.service';
+import {PhoneSignInClass} from '../../classes/class';
+import {WindowService} from '../../utils/window/window.service';
 import {environment} from '../../../environments/environment';
 import {MessageService} from '../../utils/messages/message.service';
 import {NotificationService} from '../../utils/notifications/notification.service';
 import {ErrorHandlerService} from '../../utils/error-handler/error-handler';
 import {AppService} from '../../services/app.service';
 import {LoadingBarService} from '@ngx-loading-bar/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from 'firebase';
+import {AppSpinnerService} from '../../utils/spinner/app.spinner.service';
 
 
 @Component({
@@ -23,6 +20,7 @@ import {User} from 'firebase';
 export class LoginComponent implements AfterViewInit {
   windowRef: any;
   isLoggedIn = false;
+  loggedInUser;
   phoneSignInClass = new PhoneSignInClass();
   provider = new firebase.auth.GoogleAuthProvider();
   formRequiredMessage = new MessageService();
@@ -35,19 +33,22 @@ export class LoginComponent implements AfterViewInit {
               private errorHandlerService: ErrorHandlerService,
               private loadingBarService: LoadingBarService,
               private elementRef: ElementRef,
-              private appService: AppService) {
+              private appService: AppService,
+              private spinnerService: AppSpinnerService) {
     appService.isLoggedIn$.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
   }
 
   ngAfterViewInit() {
+    this.setWindowRecaptcha();
     this.checkUser().then(user => {
       if (user) {
         this.isLoggedIn = true;
+        this.router.navigate(['/registration']);
       }
     });
-    this.setWindowRecaptcha();
   }
 
+  // Check User credentials
   async checkUser() {
     try {
       return await this.appService.checkAuth();
@@ -56,6 +57,7 @@ export class LoginComponent implements AfterViewInit {
     }
   }
 
+  // Set Recaptcha verifier
   setWindowRecaptcha() {
     this.windowRef = this.window.windowRef;
     this.windowRef.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
@@ -98,47 +100,48 @@ export class LoginComponent implements AfterViewInit {
     }
   }*/
 
-  // Phone Number SignIn
+  // Send Mobile number verification code
   async sendVerificationCode(event) {
     event.preventDefault();
     const phoneNumber = this.phoneSignInClass.number;
     const appVerifier = this.windowRef.recaptchaVerifier;
     try {
-      this.appService.loadingStatus.next(true);
+      this.spinnerService.showSpinner();
       this.windowRef.confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier);
       if (this.windowRef.confirmationResult) {
         this.verificationCodeSent = true;
-        this.appService.loadingStatus.next(false);
+        this.spinnerService.hideSpinner();
         this.notificationService.showSuccessMessage
         ('Please enter the Verification code sent to your Mobile', 'Mobile Login');
       }
     } catch (e) {
+      this.spinnerService.hideSpinner();
       this.errorHandlerService.handleError(e);
-      this.appService.loadingStatus.next(false);
     }
   }
 
-  // Verify Code
+  // Verify sent mobile code
   async verifyCode(event, model) {
     event.preventDefault();
     try {
-      this.appService.loadingStatus.next(true);
+      this.spinnerService.showSpinner();
       await this.windowRef.confirmationResult.confirm(model.value)
         .then(result => {
           if (result) {
-            this.appService.loadingStatus.next(false);
             this.appService.loggedInStatus.next(true);
+            this.loggedInUser = result.user;
             this.loadingBarService.stop();
             this.router.navigate(['/registration']);
             this.notificationService.showSuccessMessage('Phone verified successfully!', 'Mobile Verification');
+            this.spinnerService.hideSpinner();
           }
         }).catch(e => {
+          this.spinnerService.hideSpinner();
           this.errorHandlerService.handleError(e);
-          this.appService.loadingStatus.next(false);
         });
     } catch (e) {
       this.errorHandlerService.handleError(e);
-      this.appService.loadingStatus.next(false);
+      this.spinnerService.hideSpinner();
     }
 
   }
@@ -146,11 +149,11 @@ export class LoginComponent implements AfterViewInit {
   // Google SignIn
   async signInWithGoogle() {
     try {
-      this.appService.loadingStatus.next(true);
+
       await this.appService.signInWithGoogle(this.provider)
         .then(result => {
           if (result) {
-            this.appService.loadingStatus.next(false);
+
             this.loadingBarService.stop();
             this.appService.loggedInStatus.next(true);
             this.notificationService.showSuccessMessage('Log in successfull!', 'Google Sign-In');
@@ -159,12 +162,12 @@ export class LoginComponent implements AfterViewInit {
         })
         .catch(e => {
           this.errorHandlerService.handleError(e);
-          this.appService.loadingStatus.next(false);
+
           this.router.navigate(['/login']);
         });
     } catch (e) {
       this.errorHandlerService.handleError(e);
-      this.appService.loadingStatus.next(false);
+
     }
   }
 }

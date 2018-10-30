@@ -25,7 +25,9 @@
             "styles": [
               "src/styles.css",
               "src/assets/icons/material-icons.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ng2-toasty/style.css",
+              "node_modules/ng2-toasty/style-bootstrap.css",
+              "node_modules/ng2-toasty/style-material.css"
             ],
             "scripts": []
           },
