@@ -1,7 +1,43 @@
 <section class="container">
-  <ng2-smart-table [settings]="settings"
-                   [source]="ideas$"
-                   (custom)="onCustom($event)"></ng2-smart-table>
+  <div>
+    <input
+      type='text'
+      style='padding:8px;margin:15px auto;'
+      placeholder='Search Student'
+      (keyup)='updateFilter($event)'
+    />
+    <ngx-datatable
+      class="material"
+      #table
+      [rows]="rows"
+      [columnMode]="'force'"
+      [headerHeight]="40"
+      [footerHeight]="40"
+      [limit]="10"
+      [rowHeight]="40"
+      [selectionType]="'none'"
+      [selected]="selected"
+      (select)='onCustom($event)'>
+      <ngx-datatable-column name="Student Name"></ngx-datatable-column>
+      <ngx-datatable-column name="Student Class"></ngx-datatable-column>
+      <ngx-datatable-column name="Student Roll Number"></ngx-datatable-column>
+      <ngx-datatable-column name="Submitted Date"></ngx-datatable-column>
+      <ngx-datatable-column
+        name="Action"
+        [sortable]="false"
+        [canAutoResize]="false"
+        [draggable]="false"
+        [resizeable]="false"
+        [headerCheckboxable]="false"
+        [checkboxable]="false">
+        <ng-template ngx-datatable-cell-template>
+          <a class="btn-link" title="View" data-placement="top" data-toggle="tooltip" (click)="goToPage()"><i
+            class="material-icons">visibility</i></a>
+        </ng-template>
+
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
 </section>
 <section class="page-action-panel">
   <div class="page-action-buttons">
@@ -12,5 +48,3 @@
   </div>
   <br class="clear">
 </section>
-
-

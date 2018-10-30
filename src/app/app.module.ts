@@ -1,7 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {HomeComponent} from './components/home/home.component';
 import {AppRoutingModule} from './app.routing.module';
@@ -26,6 +26,7 @@ import {RegisteredUsersComponent} from './components/registered-users/registered
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {ViewIdeaComponent} from './components/ideas/view/view-idea.component';
 import {NgbCarouselConfig, NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {ToastyModule} from 'ng2-toasty';
 
@@ -59,6 +60,7 @@ import {ToastyModule} from 'ng2-toasty';
     ToastyModule.forRoot(),
     AngularFireStorageModule,
     NgbCarouselModule,
+    NgxDatatableModule,
     NgxSpinnerModule,
   ],
   exports: [ToastyModule],

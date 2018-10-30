@@ -2,3 +2,125 @@
   border: 2px solid red;
 }
 
+.form-background {
+  background-color: #f1f3f3;
+}
+
+.clear {
+  clear: both;
+}
+
+.p-t-b-10 {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.header {
+  background-color: #e4e5e5;
+}
+
+.header-hr {
+  border-bottom: 1px solid;
+  border-color: #afabab;
+  position: relative;
+  bottom: 8px;
+  margin: 0px;
+}
+
+.submit-btn {
+  background-color: #65c4f0;
+  -moz-border-radius: 28px;
+  -webkit-border-radius: 28px;
+  border-radius: 28px;
+  border: 1px solid #65c4f0;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #65c4f0;
+
+}
+
+.submit-btn:disabled {
+  cursor: not-allowed;
+}
+
+.submit-btn:hover:enabled {
+  background-color: #6ddb92;
+  border: 1px solid #6ddb92;
+  cursor: pointer;
+}
+
+.upload-icon-container {
+  position: relative;
+  height: 65px;
+  width: 70px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  user-select: none;
+}
+
+.icon-item-inner-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.icon-container {
+  position: relative;
+  background-color: #65c4f0;
+  border-radius: 22px;
+  padding: 10px;
+  float: left;
+}
+
+.icon-container:hover {
+  background-color: #13aef0;
+  cursor: pointer;
+}
+
+.upload-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.icon-image-preview {
+  font-size: 35px;
+  color: white;
+}
+
+.accordion-toggle {
+  float: right;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.container {
+  opacity: 0.9;
+}
+
+.bg {
+  background-image: url("../../../images/add-idea-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.9;
+}
