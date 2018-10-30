@@ -23,7 +23,7 @@ export class UserRegisterComponent implements OnInit {
   user: Object;
   isLoggedIn: boolean;
   isRegistrationComplete: boolean;
-  userRegisterForm: FormGroup;
+  userRegisterForm;
   formRequiredMessage = new MessageService();
   schoolTypeValues: Array<SchoolTypeClass> = [];
   formValidator = [Validators.required, Validators.min(1)];
