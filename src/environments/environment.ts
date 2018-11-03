@@ -4,9 +4,16 @@
 
 export const environment = {
   production: false,
-  firebase: {},
+  firebase: {
+    apiKey: "AIzaSyBs7kWOgU_gA0jYBaiUX_hrGK0c7dhB9VI",
+    authDomain: "student-innovations-eaef6.firebaseapp.com",
+    databaseURL: "https://student-innovations-eaef6.firebaseio.com",
+    projectId: "student-innovations-eaef6",
+    storageBucket: "student-innovations-eaef6.appspot.com",
+    messagingSenderId: "56464670979"
+  },
   phoneSignInSettings: {
-    siteToken: ''
+    siteToken: '6LcsVHgUAAAAAGLBAYGmsmIVzR3FfsxuJLq7yycz'
   },
   emailLinkAuthSettings: {
     url: 'https://localhost:3000/auth',
